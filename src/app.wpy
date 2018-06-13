@@ -6,69 +6,89 @@
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
+  background: #dedede;
 }
 </style>
 
 <script>
-import wepy from 'wepy'
-import 'wepy-async-function'
+import wepy from 'wepy';
+import 'wepy-async-function';
 
-import { setStore } from 'wepy-redux'
-import configStore from './store'
+import { setStore } from 'wepy-redux';
+import configStore from './store';
 
-const store = configStore()
-setStore(store)
+const store = configStore();
+setStore(store);
 
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/index'
+      'pages/index',
+      'pages/excits/index',
+      'pages/detail/index',
+      'pages/user/index'
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
+    },
+    tabBar: {
+      list: [
+        {
+          pagePath: 'pages/index',
+          text: '首页'
+        },
+        {
+          pagePath: 'pages/excits/index',
+          text: '精彩内容'
+        },
+        {
+          pagePath: 'pages/user/index',
+          text: '我的'
+        }
+      ]
     }
-  }
+  };
 
   globalData = {
     userInfo: null
-  }
+  };
 
-  constructor () {
-    super()
-    this.use('requestfix')
+  constructor() {
+    super();
+    this.use('requestfix');
   }
 
   onLaunch() {
-    this.testAsync()
+    this.testAsync();
   }
 
-  sleep (s) {
+  sleep(s) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve('promise resolved')
-      }, s * 1000)
-    })
+        resolve('promise resolved');
+      }, s * 1000);
+    });
   }
 
-  async testAsync () {
-    const data = await this.sleep(3)
-    console.log(data)
+  async testAsync() {
+    const data = await this.sleep(3);
+    console.log(data);
   }
 
   getUserInfo(cb) {
-    const that = this
+    const that = this;
     if (this.globalData.userInfo) {
-      return this.globalData.userInfo
+      return this.globalData.userInfo;
     }
     wepy.getUserInfo({
-      success (res) {
-        that.globalData.userInfo = res.userInfo
-        cb && cb(res.userInfo)
+      success(res) {
+        that.globalData.userInfo = res.userInfo;
+        cb && cb(res.userInfo);
       }
-    })
+    });
   }
 }
 </script>

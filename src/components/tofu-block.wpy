@@ -1,0 +1,73 @@
+<style lang="less">
+  .tofu-block {
+    margin-bottom: 25rpx;
+    width: 334rpx;
+    padding-bottom: 15rpx;
+    // height: 366rpx;
+    background: #fff;
+    overflow: hidden;
+    &__pic {
+      position: relative;
+      font-size: 0;
+      .pic {
+        display: block;
+        width: 334rpx;
+        height: 250rpx;
+      }
+      .cover {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 65rpx;
+        height: 65rpx;
+        transform: translate(-50%, -50%);
+      }
+    }
+    &__title {
+      display: block;
+      margin: 15rpx 24rpx;
+      font-size: 32rpx;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    &__sub {
+      position: relative;
+      padding: 0 24rpx;
+      font-size: 0;
+      &-from {
+        font-size: 28rpx;
+        color: #666;
+      }
+      .dot {
+        position: absolute;
+        right: 4rpx;
+        top: 50%;
+        width: 28rpx;
+        height: 28rpx;
+        transform: translate(0, -50%);
+      }
+    }
+  }
+</style>
+<template>
+  <view class="tofu-block">
+    <view class="tofu-block__pic">
+      <image class="pic" src="/images/block-pic.png" />
+      <image class="cover" src="/images/common/play.png" />
+    </view>
+    <text class="tofu-block__title">沉默的羔鸡</text>
+    <view class="tofu-block__sub">
+      <text class="tofu-block__sub-from">绝地求生</text>
+      <image class="dot" src="/images/common/dot.png" />
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class TofuBlock extends wepy.component {
+  props = {
+    data: Object
+  };
+}
+</script>
