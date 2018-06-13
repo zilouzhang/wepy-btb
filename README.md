@@ -17,7 +17,7 @@ wepy btb
 进入项目目录，执行npm install安装相关依赖：
 ```
 # cd wepy-btb/
-# npm install
+# yarn 或者 npm install
 ```
 
 #### 编译项目
