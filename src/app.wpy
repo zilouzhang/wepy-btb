@@ -22,12 +22,7 @@ setStore(store);
 
 export default class extends wepy.app {
   config = {
-    pages: [
-      'pages/index',
-      'pages/excits/index',
-      'pages/detail/index',
-      'pages/user/index'
-    ],
+    pages: ['pages/index', 'pages/excits/index', 'pages/detail/index', 'pages/user/index'],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
@@ -38,15 +33,21 @@ export default class extends wepy.app {
       list: [
         {
           pagePath: 'pages/index',
-          text: '首页'
+          text: '首页',
+          selectedIconPath: 'images/default-active.png',
+          iconPath: 'images/default.png'
         },
         {
           pagePath: 'pages/excits/index',
-          text: '精彩内容'
+          text: '精彩内容',
+          selectedIconPath: 'images/excits-active.png',
+          iconPath: 'images/excits.png'
         },
         {
           pagePath: 'pages/user/index',
-          text: '我的'
+          text: '我的',
+          selectedIconPath: 'images/user-active.png',
+          iconPath: 'images/user.png'
         }
       ]
     }
