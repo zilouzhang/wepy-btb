@@ -1,0 +1,51 @@
+<style lang="less">
+.header {
+  width: 750rpx;
+  height: auto;
+  font-size: 0;
+  &-top {
+    display: block;
+    width: 750rpx;
+    height: 193rpx;
+  }
+  &-swiper {
+    font-size: 0;
+    image {
+      display: block;
+      width: 750rpx;
+      height: 389rpx;
+    }
+  }
+  &-title {
+    margin: 10rpx auto 25rpx;
+    font-size: 0;
+    image {
+      display: block;
+      margin: 0 auto;
+      width: 733rpx;
+      height: 78rpx;
+    }
+  }
+}
+</style>
+<template>
+  <view class="header">
+    <image class="header-top" src="/images/header.png" />
+    <view class="header-swiper">
+      <swiper indicator-dots="true">
+        <swiper-item>
+          <image src="/images/excits/swiper.png" />
+        </swiper-item>
+      </swiper>
+    </view>
+    <slot name="title">标题图片</slot>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class Header extends wepy.component {
+  props = {
+    swipers: Object
+  };
+}
+</script>

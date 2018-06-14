@@ -1,22 +1,4 @@
 <style lang="less">
-.swiper {
-  font-size: 0;
-  image {
-    display: block;
-    width: 750rpx;
-    height: 389rpx;
-  }
-}
-.title {
-  margin: 10rpx auto 25rpx;
-  font-size: 0;
-  image {
-    display: block;
-    margin: 0 auto;
-    width: 733rpx;
-    height: 78rpx;
-  }
-}
 .lists {
   display: flex;
   flex-direction: row;
@@ -28,13 +10,11 @@
 </style>
 <template>
   <view class="container">
-    <commonHeader />
-    <view class="swiper">
-      <image src="/images/excits/swiper.png" />
-    </view>
-    <view class="title">
-      <image src="/images/excits/title.png" />
-    </view>
+    <header>
+      <view class="header-title" slot="title">
+        <image src="/images/excits/title.png" />
+      </view>
+    </header>
     <view class="lists">
       <repeat for="{{lists}}" item="list" key="index">
         <tofuBlock :data="list" />
@@ -44,14 +24,14 @@
 </template>
 <script>
 import wepy from 'wepy';
-import CommonHeader from 'components/common-header';
+import Header from 'components/header';
 import TofuBlock from 'components/tofu-block';
 export default class Excits extends wepy.page {
   config = {
     navigationBarTitleText: '精彩内容'
   };
   components = {
-    commonHeader: CommonHeader,
+    header: Header,
     tofuBlock: TofuBlock
   };
   data = {

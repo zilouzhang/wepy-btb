@@ -2,19 +2,19 @@
 </style>
 <template>
   <view class="container">
-    <commonHeader />
+    <header />
   </view>
 </template>
 
 <script>
 import wepy from 'wepy';
-import CommonHeader from 'components/common-header';
+import Header from 'components/header';
 export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: '首页'
   };
   components = {
-    commonHeader: CommonHeader
+    header: Header
   };
   data = {};
 
