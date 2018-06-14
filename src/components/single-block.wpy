@@ -1,0 +1,73 @@
+<style lang="less">
+.single-block {
+  margin: 0 10rpx 4rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  background: #fff;
+  &__info {
+    margin-right: 24rpx;
+    padding: 10rpx 0 10rpx 24rpx;
+    height: 138rpx;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  &__title {
+    line-height: 1.4;
+    font-size: 28rpx;
+    color: #000;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  &__sub {
+    font-size: 0;
+    text {
+      font-size: 24rpx;
+      color: #ccc;
+    }
+    text + text {
+      margin-left: 30rpx;
+    }
+  }
+  &__pic {
+    font-size: 0;
+    width: 214rpx;
+    height: 158rpx;
+    overflow: hidden;
+    image {
+      display: block;
+      width: 214rpx;
+      height: 158rpx;
+    }
+  }
+}
+</style>
+<template>
+  <navigator class="single-block" hover-class="none">
+    <view class="single-block__info">
+      <view class="single-block__title">{{data.title}}</view>
+      <view class="single-block__sub">
+        <text>{{data.from}}</text>
+        <text>{{data.time}}</text>
+      </view>
+    </view>
+    <view class="single-block__pic">
+      <image src="/images/single-block.png" />
+    </view>
+  </navigator>
+</template>
+<script>
+import wepy from 'wepy';
+export default class SingleBlock extends wepy.component {
+  props = {
+    data: Object
+  };
+}
+</script>

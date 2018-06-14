@@ -1,22 +1,57 @@
 <style lang="less">
+.lists {
+  padding-bottom: 30rpx;
+}
 </style>
 <template>
   <view class="container">
-    <header />
+    <header>
+      <view class="header-title" slot="title">
+        <image src="/images/index/title.png" />
+      </view>
+    </header>
+    <view class="lists">
+      <repeat for="{{lists}}" item="list" key="index">
+        <singleBlock :data="list" />
+      </repeat>
+    </view>
   </view>
 </template>
 
 <script>
 import wepy from 'wepy';
 import Header from 'components/header';
+import SingleBlock from 'components/single-block';
 export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: '首页'
   };
   components = {
-    header: Header
+    header: Header,
+    singleBlock: SingleBlock
   };
-  data = {};
+  data = {
+    lists: [
+      {
+        id: '1',
+        title: '2018世界区块链创业联盟百城链享-高峰论坛-6月10日登陆中国6月10日登陆中国6月10日登陆中国6月10日登陆中国',
+        from: '花生区块链',
+        time: '55分钟前'
+      },
+      {
+        id: '1',
+        title: '2018世界区块链创业联盟百城链享-高峰论坛-6月10日登陆中国',
+        from: '花生区块链',
+        time: '55分钟前'
+      },
+      {
+        id: '1',
+        title: '2018世界区块链创业联盟百城链享-高峰论坛-6月10日登陆中国',
+        from: '花生区块链',
+        time: '55分钟前'
+      }
+    ]
+  };
 
   computed = {
     now() {

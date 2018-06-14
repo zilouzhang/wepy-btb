@@ -51,7 +51,7 @@
   }
 </style>
 <template>
-  <view class="tofu-block">
+  <navigator class="tofu-block" hover-class="none">
     <view class="tofu-block__pic">
       <image class="pic" src="/images/block-pic.png" />
       <image class="cover" src="/images/common/play.png" />
@@ -61,7 +61,7 @@
       <text class="tofu-block__sub-from">绝地求生</text>
       <image class="dot" src="/images/common/dot.png" />
     </view>
-  </view>
+  </navigator>
 </template>
 <script>
 import wepy from 'wepy';

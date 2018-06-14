@@ -1,10 +1,11 @@
 <style lang="less">
+page {
+  background: #dedede;
+}
 .container {
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
   box-sizing: border-box;
   background: #dedede;
 }
@@ -30,6 +31,7 @@ export default class extends wepy.app {
       navigationBarTextStyle: 'black'
     },
     tabBar: {
+      selectedColor: '#222222',
       list: [
         {
           pagePath: 'pages/index',
