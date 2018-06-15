@@ -1,0 +1,19 @@
+<style lang="less">
+page {
+  background: #f4f4f8;
+  color:#333;
+
+}
+</style>
+<template>
+  <view class="container">
+关于我们
+
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class About extends wepy.page {
+  data = {};
+}
+</script>

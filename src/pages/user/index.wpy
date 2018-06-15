@@ -1,11 +1,97 @@
 <style lang="less">
+page {
+  background: #f4f4f8;
+}
+
+.head-block {
+  background-color: #1f2123;
+  display: flex;
+  align-items: center;
+  padding: 40rpx 28rpx 40rpx 36rpx;
+}
+.head-block__img {
+  width: 108rpx;
+  background-color: gray;
+  height: 108rpx;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.head-block__info {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8rpx 0 8rpx 26rpx;
+}
+
+.head-block__info--name {
+  width: 100%;
+  font-size: 32rpx;
+  line-height: 44rpx;
+  color: #ffffff;
+  margin-bottom: 8rpx;
+}
+
+.menu-block {
+  margin-top: 10px;
+  width: 100%;
+  background: white;
+}
+.menu-block__item {
+  margin-left: 28rpx;
+  padding-top: 28rpx;
+  height: 68rpx;
+  border-bottom: 1px solid #f4f4f8;
+  position: relative;
+}
+.menu-block__icon .content {
+  font-size: 32rpx;
+  color: #333333;
+}
+.menu-block__icon .gray_arrow {
+  width: 14rpx;
+  height: 24rpx;
+  position: absolute;
+  right: 20rpx;
+  top: 50%;
+  transform: translateY(-50%);
+}
 </style>
 <template>
-  <view class="container"></view>
+  <view class="container">
+      <view class="head-block" bindtap="toLogin">
+      <image class="head-block__img" src="{{userInfo.avatar}}"></image>
+      <view class="head-block__info">
+        <text class="head-block__info--name">111</text>
+      </view>
+  </view>
+  <view class="menu-block">
+    <view class="menu-block__icon">
+      <view class="menu-block__item" bindtap="toUrl" data-url="user/share">
+        <text class="content">分享</text>
+        <image class="gray_arrow" src="../../images/gray_arrow.png" />
+      </view>
+  </view>
+    <view class="menu-block__icon">
+      <view class="menu-block__item" bindtap="toUrl" data-url="user/about">
+        <text class="content">关于我们</text>
+        <image class="gray_arrow" src="../../images/gray_arrow.png" />
+      </view>
+  </view>
+  </view>
+  </view>
 </template>
 <script>
 import wepy from 'wepy';
 export default class UserCenter extends wepy.page {
-  data = {};
+  data = {
+  }
+  methods = {
+    toUrl (e) {
+      // console.log(e)
+      // let uid=e.currentTarget
+      // wepy.
+    }
+  };
 }
 </script>
