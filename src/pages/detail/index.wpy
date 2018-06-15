@@ -1,13 +1,27 @@
 <style lang="less">
+page {
+  background: #f4f4f8;
+  color: #333;
+}
+.head {
+  background-color: rgb(254, 219, 0);
+  height: 463rpx;
+
+  image {
+    width: 750rpx;
+  }
+}
 </style>
 <template>
-  <view class="container"></view>
+  <view class="container">
+<view class="head">
+  <image src="../../../images/user/head.png" />
+</view>
+  </view>
 </template>
 <script>
 import wepy from 'wepy';
 export default class Detail extends wepy.page {
-  config = {
-    navigationBarTitleText: '内容详情'
-  };
+  data = {};
 }
 </script>
