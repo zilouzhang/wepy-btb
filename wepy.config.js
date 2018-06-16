@@ -15,6 +15,7 @@ module.exports = {
   resolve: {
     alias: {
       'components': path.join(__dirname, 'src/components'),
+      'mixins': path.join(__dirname, 'src/mixins'),
       'images': path.join(__dirname, 'src/images'),
       'utils': path.join(__dirname, 'src/utils'),
       counter: path.join(__dirname, 'src/components/counter'),
