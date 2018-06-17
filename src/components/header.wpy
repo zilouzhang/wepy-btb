@@ -30,12 +30,14 @@
 </style>
 <template>
   <view class="header">
-    <image class="header-top" src="/images/header.png" />
+    <image class="header-top" src="/images/header.png"  />
     <view class="header-swiper">
       <swiper indicator-dots="true">
-        <swiper-item>
-          <image src="/images/excits/swiper.png" />
-        </swiper-item>
+        <repeat for="{{swipers}}" item="list" key="index">
+          <swiper-item>
+            <image model="aspectFit" data-id="{{list.id}}" style="height: {{list.height}}" lazy-load="true" src="{{list.url}}" @load="resizePic" />
+          </swiper-item>
+        </repeat>
       </swiper>
     </view>
     <slot name="title">标题图片</slot>
@@ -46,6 +48,22 @@ import wepy from 'wepy';
 export default class Header extends wepy.component {
   props = {
     swipers: Object
+  };
+  methods = {
+    resizePic(e) {
+      let { detail, currentTarget } = e;
+      detail = detail || {};
+      let { dataset } = currentTarget;
+      let { id } = dataset;
+      let { height, width } = detail;
+      this.swipers = this.swipers.map(item => {
+        if (item.id === id) {
+          item.height = `${height / width * 750}rpx`;
+        }
+        return item;
+      });
+      this.$apply();
+    }
   };
 }
 </script>

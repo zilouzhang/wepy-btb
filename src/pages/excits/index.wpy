@@ -10,7 +10,7 @@
 </style>
 <template>
   <view class="container">
-    <header>
+    <header :swipers="swipers">
       <view class="header-title" slot="title">
         <image src="/images/excits/title.png" />
       </view>
@@ -20,21 +20,29 @@
         <tofuBlock :data="list" />
       </repeat>
     </view>
+    <hasMoreTip :show.sync="hasMore" />
   </view>
 </template>
 <script>
 import wepy from 'wepy';
+// components
 import Header from 'components/header';
 import TofuBlock from 'components/tofu-block';
+import HasMoreTip from 'components/has-more-tip';
+// mixins
+import PageMixin from 'mixins/page';
+
 export default class Excits extends wepy.page {
   config = {
     navigationBarTitleText: '精彩内容'
   };
   components = {
     header: Header,
-    tofuBlock: TofuBlock
+    tofuBlock: TofuBlock,
+    hasMoreTip: HasMoreTip
   };
   data = {
+    swipers: [{ id: '1', url: '/images/excits/swiper.png' }],
     lists: [
       {
         id: '1',
@@ -58,5 +66,6 @@ export default class Excits extends wepy.page {
       }
     ]
   };
+  mixins = [PageMixin];
 }
 </script>

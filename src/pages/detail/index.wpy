@@ -14,9 +14,9 @@ page {
 </style>
 <template>
   <view class="container">
-<view class="head">
-  <image src="../../../images/user/head.png" />
-</view>
+    <view class="head">
+      <image src="../../../images/user/head.png" />
+    </view>
   </view>
 </template>
 <script>

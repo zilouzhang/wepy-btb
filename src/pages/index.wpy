@@ -5,7 +5,7 @@
 </style>
 <template>
   <view class="container">
-    <header>
+    <header :swipers="swipers">
       <view class="header-title" slot="title">
         <image src="/images/index/title.png" />
       </view>
@@ -15,26 +15,34 @@
         <singleBlock :data="list" />
       </repeat>
     </view>
+    <hasMoreTip :show.sync="hasMore" />
   </view>
 </template>
 
 <script>
 import wepy from 'wepy';
+// components
 import Header from 'components/header';
 import SingleBlock from 'components/single-block';
+import HasMoreTip from 'components/has-more-tip';
+// mixins
+import PageMixin from 'mixins/page';
 export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: '首页'
   };
   components = {
     header: Header,
-    singleBlock: SingleBlock
+    singleBlock: SingleBlock,
+    hasMoreTip: HasMoreTip
   };
   data = {
+    swipers: [{ id: '1', url: '/images/excits/swiper.png' }],
     lists: [
       {
         id: '1',
-        title: '2018世界区块链创业联盟百城链享-高峰论坛-6月10日登陆中国6月10日登陆中国6月10日登陆中国6月10日登陆中国',
+        title:
+          '2018世界区块链创业联盟百城链享-高峰论坛-6月10日登陆中国6月10日登陆中国6月10日登陆中国6月10日登陆中国',
         from: '花生区块链',
         time: '55分钟前'
       },
@@ -53,17 +61,10 @@ export default class Index extends wepy.page {
     ]
   };
 
-  computed = {
-    now() {
-      return +new Date();
-    }
-  };
+  mixins = [PageMixin];
 
   methods = {};
 
   events = {};
-
-  onLoad() {
-  }
 }
 </script>
