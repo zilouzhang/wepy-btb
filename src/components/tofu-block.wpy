@@ -51,7 +51,7 @@
   }
 </style>
 <template>
-  <navigator class="tofu-block" hover-class="none">
+  <navigator url="/pages/detail/index" class="tofu-block" hover-class="none">
     <view class="tofu-block__pic">
       <image class="pic" src="/images/block-pic.png" />
       <image class="cover" src="/images/common/play.png" />
