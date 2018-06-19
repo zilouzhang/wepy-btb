@@ -30,7 +30,7 @@ import Header from 'components/header';
 import TofuBlock from 'components/tofu-block';
 import HasMoreTip from 'components/has-more-tip';
 // mixins
-import PageMixin from 'mixins/page';
+import LoadMore from 'mixins/loadMore';
 
 export default class Excits extends wepy.page {
   config = {
@@ -66,6 +66,6 @@ export default class Excits extends wepy.page {
       }
     ]
   };
-  mixins = [PageMixin];
+  mixins = [LoadMore];
 }
 </script>

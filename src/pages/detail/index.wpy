@@ -11,17 +11,111 @@ page {
     width: 750rpx;
   }
 }
+.save-btn {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 32rpx;
+  background: #fff;
+  color: #222;
+  text-align: center;
+  &[data-active='true'] {
+    display: block;
+  }
+}
+.canvas {
+  width: 750rpx;
+}
 </style>
 <template>
   <view class="container">
     <view class="head">
-      <image src="../../../images/user/head.png" />
+      <image data-id="head" src="/images/detail/head.png" style="height: {{headPicHeight}}rpx;" @tap="drawImg" @load="resizePic"/>
     </view>
+    <image data-id="line" class="line" src="/images/detail/line.png" style="height: {{linePicHeight}}rpx;" @load="resizePic" />
+    <view data-active="{{showSaveBtn}}" class="save-btn" @tap="saveImage">保存图片到相册</view>
+    <canvas class="canvas" canvas-id="ds" style="height: {{canvasHeight}}px;" />
   </view>
 </template>
 <script>
 import wepy from 'wepy';
+import { ScreenHeight, ScreenWidth } from 'utils';
 export default class Detail extends wepy.page {
-  data = {};
+  data = {
+    showSaveBtn: false,
+    canvasHeight: ScreenHeight,
+    headPicHeight: 0,
+    linePicHeight: 0,
+    tempFilePath: null
+  };
+  methods = {
+    resizePic(e) {
+      console.log(e);
+      let { detail, currentTarget } = e;
+      let { width, height } = detail;
+      let { dataset } = currentTarget;
+      let { id } = dataset;
+      let ratio = height / width * 750;
+      if (id === 'head') {
+        this.headPicHeight = ratio;
+      } else {
+        this.linePicHeight = ratio;
+      }
+      this.$apply();
+    },
+    drawImg(e) {
+      // 画图
+      const headPicHeightPx = this.headPicHeight * (ScreenWidth / 750);
+      const linePicHeightPx = this.linePicHeight * (ScreenWidth / 750);
+      console.log(headPicHeightPx);
+      const ctx = wepy.createCanvasContext('ds');
+      ctx.drawImage(
+        '/images/detail/head.png',
+        0,
+        0,
+        ScreenWidth,
+        headPicHeightPx
+      );
+      ctx.save();
+      ctx.drawImage(
+        '/images/detail/line.png',
+        0,
+        headPicHeightPx - 100,
+        ScreenWidth,
+        linePicHeightPx
+      );
+      ctx.draw(false, this.getTemplateImage('ds'));
+    },
+    saveImage() {
+      // 保存图片
+      let that = this;
+      if (that.tempFilePath) {
+        wepy.saveFile({
+          tempFilePath: that.tempFilePath,
+          success: res => {
+            console.log(res.savedFilePath);
+          }
+        });
+      }
+    }
+  };
+  getTemplateImage(cId) {
+    // 从canvas导出图片
+    let that = this;
+    wepy.canvasToTempFilePath({
+      canvasId: cId,
+      success: res => {
+        that.showSaveBtn = true;
+        that.tempFilePath = res.tempFilePath;
+        that.$apply();
+        console.log(that.tempFilePath);
+      }
+    });
+  }
 }
 </script>

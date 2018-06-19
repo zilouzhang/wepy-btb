@@ -26,7 +26,7 @@ import Header from 'components/header';
 import SingleBlock from 'components/single-block';
 import HasMoreTip from 'components/has-more-tip';
 // mixins
-import PageMixin from 'mixins/page';
+import LoadMore from 'mixins/loadMore';
 export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: '首页'
@@ -61,7 +61,7 @@ export default class Index extends wepy.page {
     ]
   };
 
-  mixins = [PageMixin];
+  mixins = [LoadMore];
 
   methods = {};
 

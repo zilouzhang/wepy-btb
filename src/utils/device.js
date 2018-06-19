@@ -3,5 +3,6 @@
 import wepy from 'wepy';
 export const sysInfo = wepy.getSystemInfoSync();
 export const ScreenWidth = sysInfo.screenWidth;
+export const ScreenHeight = sysInfo.screenHeight;
 export const WxVersion = sysInfo.version;
 export const SdkVersion = sysInfo.SDKVersion;
