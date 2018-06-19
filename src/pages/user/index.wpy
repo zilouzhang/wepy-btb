@@ -67,7 +67,7 @@
         <text class="left">分享</text>
         <image class="gray_arrow" src="/images/gray_arrow.png" />
       </button>
-      <view class="menu-block__item">
+      <view class="menu-block__item" data-url="user/about" bindtap="toUrl">
         <text class="left">关于我们</text>
         <image class="gray_arrow" src="/images/gray_arrow.png" />
       </view>
@@ -80,8 +80,9 @@ import wepy from 'wepy';
 import LoginAction from 'components/login-action';
 import { getStorage } from 'utils';
 export default class UserCenter extends wepy.page {
-  onShow() {
-  }
+  config = {
+    navigationBarTitleText: '个人中心'
+  };
   components = {
     login: LoginAction
   };
