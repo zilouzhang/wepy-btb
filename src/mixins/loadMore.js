@@ -4,13 +4,11 @@ export default class PageMixin extends wepy.mixin {
     this.loadMore();
   }
   loadMore() {
+    console.log(this.hasMore);
     if (!this.hasMore) {
       return false;
     }
-    setTimeout(() => {
-      this.hasMore = false;
-      this.$apply();
-    }, 300);
+    this.getList();
   }
   data = {
     hasMore: true

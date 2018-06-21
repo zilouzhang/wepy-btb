@@ -35,8 +35,7 @@ export default class extends wepy.app {
       'pages/excits/index',
       'pages/detail/index',
       'pages/user/index',
-      'pages/user/about',
-      'pages/user/share'
+      'pages/user/about'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -75,6 +74,7 @@ export default class extends wepy.app {
 
   constructor() {
     super();
+    this.use('promisify');
     this.use('requestfix');
   }
 

@@ -1,35 +1,47 @@
 <style lang="less">
-page {
-  background: #f4f4f8;
-  color: #333;
+@import "../../wxParse/wxParse.wxss";
+page,
+.container {
+  background: #fff;
 }
 .head {
   background-color: rgb(254, 219, 0);
   height: 463rpx;
-
   image {
     width: 750rpx;
   }
 }
-.save-btn {
-  display: none;
-  position: fixed;
-  z-index: 10;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 88rpx;
-  line-height: 88rpx;
-  font-size: 32rpx;
-  background: #fff;
-  color: #222;
-  text-align: center;
-  &[data-active='true'] {
-    display: block;
-  }
+.title {
+  padding: 68rpx 30rpx 46rpx;
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1f1a17;
+  line-height: 40rpx;
 }
-.canvas {
-  width: 750rpx;
+.timer {
+  font-size: 28rpx;
+  color: #1f1a17;
+  text-align: center;
+}
+.article {
+  padding: 40rpx 30rpx;
+}
+.btns {
+  padding: 35rpx 0;
+  font-size: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.btns image,
+.btns button {
+  width: 222rpx;
+  height: 104rpx;
+}
+.btns button {
+  padding: 0;
+  margin: 0 0 0 130rpx;
 }
 </style>
 <template>
@@ -37,21 +49,42 @@ page {
     <view class="head">
       <image data-id="head" src="/images/detail/head.png" style="height: {{headPicHeight}}rpx;" @tap="drawImg" @load="resizePic"/>
     </view>
-    <image data-id="line" class="line" src="/images/detail/line.png" style="height: {{linePicHeight}}rpx;" @load="resizePic" />
-    <view data-active="{{showSaveBtn}}" class="save-btn" @tap="saveImage">保存图片到相册</view>
-    <canvas class="canvas" canvas-id="ds" style="height: {{canvasHeight}}px;" />
+    <view class="title">{{title}}</view>
+    <view class="timer">{{timer}}</view>
+    <import src="../../wxParse/wxParse.wxml" />
+    <view class="article">
+      <template is="wxParse" data="{{wxParseData:content.nodes}}"/>
+    </view>
+    <view class="btns">
+      <image src="/images/detail/share.png" />
+      <button open-type="share" hover-class="none">
+        <image src="/images/detail/send.png" />
+      </button>
+    </view>
+    <toast />
   </view>
 </template>
 <script>
 import wepy from 'wepy';
-import { ScreenHeight, ScreenWidth } from 'utils';
+import { Host } from 'config';
+import { ScreenHeight, ScreenWidth, get } from 'utils';
+import WxParse from 'wxParse/wxParse';
+// components
+// import Article from 'components/article';
+import Toast from 'components/toast';
 export default class Detail extends wepy.page {
   data = {
+    title: '',
+    timer: '',
+    content: '',
     showSaveBtn: false,
     canvasHeight: ScreenHeight,
     headPicHeight: 0,
     linePicHeight: 0,
     tempFilePath: null
+  };
+  components = {
+    toast: Toast
   };
   methods = {
     resizePic(e) {
@@ -116,6 +149,25 @@ export default class Detail extends wepy.page {
         console.log(that.tempFilePath);
       }
     });
+  }
+  // 获取文章数据
+  getInit(id) {
+    let _self = this;
+    get(`${Host}detail/info`, {
+      aid: id
+    }).then(res => {
+      let { title, time, content } = res;
+      this.title = title || '';
+      this.timer = time || '';
+      content = content || '';
+      this.$apply();
+      WxParse.wxParse('content', 'html', content, _self, 5);
+    }).catch(err => {
+      this.$invoke('toast', 'show', err);
+    });
+  }
+  onLoad(e) {
+    this.getInit(e.id);
   }
 }
 </script>

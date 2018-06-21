@@ -18,7 +18,9 @@ module.exports = {
       'mixins': path.join(__dirname, 'src/mixins'),
       'images': path.join(__dirname, 'src/images'),
       'utils': path.join(__dirname, 'src/utils'),
-      counter: path.join(__dirname, 'src/components/counter'),
+      'utils': path.join(__dirname, 'src/utils'),
+      'config': path.join(__dirname, 'src/config'),
+      'wxParse': path.join(__dirname, 'src/wxParse'),
       '@': path.join(__dirname, 'src')
     },
     aliasFields: ['wepy', 'weapp'],

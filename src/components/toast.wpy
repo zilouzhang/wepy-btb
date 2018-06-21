@@ -1,0 +1,61 @@
+<style lang="less">
+.wetoast {
+  visibility: hidden;
+  height: 0;
+  transition: all 0.3s linear;
+  &__text {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    padding: 16rpx 30rpx;
+    font-size: 24rpx;
+    color: #fff;
+    background: rgba(40, 40, 40, 0.75);
+    border-radius: 10rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    word-break: break-all;
+    word-wrap: break-word;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s linear;
+  }
+  &[data-active='true'] {
+    visibility: visible;
+    .wetoast__text {
+      opacity: 1;
+    }
+  }
+}
+</style>
+<template>
+  <view class="wetoast" data-active="{{show}}">
+    <text class="wetoast__text">{{text}}</text>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class Toast extends wepy.component {
+  data = {
+    show: false,
+    text: ''
+  };
+  methods = {
+    show(text) {
+      if (text) {
+        this.text = text;
+        this.show = true;
+        this.hide();
+      }
+    }
+  };
+  events = {};
+  hide() {
+    setTimeout(() => {
+      this.show = false;
+      this.$apply();
+    }, 3000);
+  }
+}
+</script>

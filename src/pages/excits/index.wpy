@@ -7,65 +7,139 @@
   align-items: flex-start;
   padding: 0 28rpx;
 }
+.tofu-block {
+    margin-bottom: 25rpx;
+    width: 334rpx;
+    padding-bottom: 15rpx;
+    // height: 366rpx;
+    background: #fff;
+    overflow: hidden;
+    &__pic {
+      position: relative;
+      font-size: 0;
+      .pic {
+        display: block;
+        width: 334rpx;
+        height: 250rpx;
+      }
+      .cover {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 65rpx;
+        height: 65rpx;
+        transform: translate(-50%, -50%);
+      }
+    }
+    &__title {
+      display: block;
+      margin: 15rpx 24rpx;
+      font-size: 32rpx;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    &__sub {
+      position: relative;
+      padding: 0 24rpx;
+      font-size: 0;
+      &-from {
+        font-size: 28rpx;
+        color: #666;
+      }
+      .dot {
+        position: absolute;
+        right: 4rpx;
+        top: 50%;
+        width: 28rpx;
+        height: 28rpx;
+        transform: translate(0, -50%);
+      }
+    }
+  }
 </style>
 <template>
   <view class="container">
-    <header :swipers="swipers">
+    <header :banner.sync="banner">
       <view class="header-title" slot="title">
         <image src="/images/excits/title.png" />
       </view>
     </header>
     <view class="lists">
-      <repeat for="{{lists}}" item="list" key="index">
+      <block wx:for="{{lists}}" wx:key="{{index}}">
+        <navigator url="/pages/detail/index?id={{item.id}}" class="tofu-block" hover-class="none">
+          <view class="tofu-block__pic">
+            <image class="pic" src="{{item.img}}" />
+            <image class="cover" src="/images/common/play.png" />
+          </view>
+          <text class="tofu-block__title">{{item.title}}</text>
+          <view class="tofu-block__sub">
+            <text class="tofu-block__sub-from">{{item.from}}</text>
+            <image class="dot" src="/images/common/dot.png" />
+          </view>
+        </navigator>
+      </block>
+      <!-- <repeat for="{{lists}}" item="list" key="index">
         <tofuBlock :data="list" />
-      </repeat>
+      </repeat> -->
     </view>
+    <toast />
     <hasMoreTip :show.sync="hasMore" />
   </view>
 </template>
 <script>
 import wepy from 'wepy';
+import { Host } from 'config';
+import { post } from 'utils';
 // components
 import Header from 'components/header';
-import TofuBlock from 'components/tofu-block';
+// import TofuBlock from 'components/tofu-block';
 import HasMoreTip from 'components/has-more-tip';
+import Toast from 'components/toast';
 // mixins
 import LoadMore from 'mixins/loadMore';
 
 export default class Excits extends wepy.page {
+  page = 1
+  // 获取列表数据
+  getList() {
+    post(`${Host}excits/lists`, {
+      page: this.page
+    })
+      .then(res => {
+        let { banner, lists } = res;
+        banner = banner || [];
+        lists = lists || [];
+        let listsCache = this.lists;
+        listsCache = listsCache.concat(lists);
+        if (this.page === 1) {
+          this.banner = banner;
+        }
+        this.hasMore = !!res.has_more_page;
+        this.lists = listsCache;
+        this.page += 1;
+        this.$apply();
+      })
+      .catch(err => {
+        this.$invoke('toast', 'show', err);
+      });
+  }
   config = {
     navigationBarTitleText: '精彩内容'
   };
   components = {
     header: Header,
-    tofuBlock: TofuBlock,
+    // tofuBlock: TofuBlock,
+    toast: Toast,
     hasMoreTip: HasMoreTip
   };
   data = {
-    swipers: [{ id: '1', url: '/images/excits/swiper.png' }],
-    lists: [
-      {
-        id: '1',
-        title: '沉默的羔鸡',
-        from: '绝地求生'
-      },
-      {
-        id: '1',
-        title: '沉默的羔鸡',
-        from: '绝地求生'
-      },
-      {
-        id: '1',
-        title: '沉默的羔鸡',
-        from: '绝地求生'
-      },
-      {
-        id: '1',
-        title: '沉默的羔鸡',
-        from: '绝地求生'
-      }
-    ]
+    banner: [],
+    lists: []
   };
   mixins = [LoadMore];
+  onShow() {
+    this.getList();
+  }
 }
 </script>

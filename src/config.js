@@ -1,0 +1,1 @@
+export const Host = 'https://huasheng.yunjixiaodian.com/wxapp/';

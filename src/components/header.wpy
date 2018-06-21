@@ -33,9 +33,9 @@
     <image class="header-top" src="/images/header.png"  />
     <view class="header-swiper">
       <swiper indicator-dots="true">
-        <repeat for="{{swipers}}" item="list" key="index">
+        <repeat for="{{banner}}" item="list" key="index">
           <swiper-item>
-            <image model="aspectFit" data-id="{{list.id}}" style="height: {{list.height}}" lazy-load="true" src="{{list.url}}" @load="resizePic" />
+            <image model="aspectFit" data-id="{{list.id}}" style="height: {{list.height}}" lazy-load="true" src="{{list.img}}" @load="resizePic" />
           </swiper-item>
         </repeat>
       </swiper>
@@ -47,7 +47,7 @@
 import wepy from 'wepy';
 export default class Header extends wepy.component {
   props = {
-    swipers: Object
+    banner: Object
   };
   methods = {
     resizePic(e) {
@@ -56,7 +56,7 @@ export default class Header extends wepy.component {
       let { dataset } = currentTarget;
       let { id } = dataset;
       let { height, width } = detail;
-      this.swipers = this.swipers.map(item => {
+      this.banner = this.banner.map(item => {
         if (item.id === id) {
           item.height = `${height / width * 750}rpx`;
         }

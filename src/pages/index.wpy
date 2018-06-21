@@ -2,65 +2,138 @@
 .lists {
   padding-bottom: 30rpx;
 }
+.single-block {
+  margin: 0 10rpx 4rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  background: #fff;
+  &__info {
+    margin-right: 24rpx;
+    padding: 10rpx 0 10rpx 24rpx;
+    height: 138rpx;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  &__title {
+    line-height: 1.4;
+    font-size: 28rpx;
+    color: #000;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  &__sub {
+    font-size: 0;
+    text {
+      font-size: 24rpx;
+      color: #ccc;
+    }
+    text + text {
+      margin-left: 30rpx;
+    }
+  }
+  &__pic {
+    font-size: 0;
+    width: 214rpx;
+    height: 158rpx;
+    overflow: hidden;
+    image {
+      display: block;
+      width: 214rpx;
+      height: 158rpx;
+    }
+  }
+}
 </style>
 <template>
   <view class="container">
-    <header :swipers="swipers">
+    <header :banner.sync="banner">
       <view class="header-title" slot="title">
         <image src="/images/index/title.png" />
       </view>
     </header>
     <view class="lists">
-      <repeat for="{{lists}}" item="list" key="index">
-        <singleBlock :data="list" />
-      </repeat>
+      <block wx:for="{{lists}}" wx:key="{{index}}">
+        <navigator url="/pages/detail/index?id={{item.id}}" class="single-block" hover-class="none">
+          <view class="single-block__info">
+            <view class="single-block__title">{{item.title}}</view>
+            <view class="single-block__sub">
+              <text>{{item.from}}</text>
+              <text>{{item.time}}</text>
+            </view>
+          </view>
+          <view class="single-block__pic">
+            <image src="{{item.img}}" />
+          </view>
+        </navigator>
+      </block>
+      <!-- <repeat for="{{lists}}" item="list" key="index">
+        <singleBlock :data.sync="list" />
+      </repeat> -->
     </view>
+    <toast />
     <hasMoreTip :show.sync="hasMore" />
   </view>
 </template>
 
 <script>
 import wepy from 'wepy';
+import { Host } from 'config';
+import { post } from 'utils';
 // components
 import Header from 'components/header';
-import SingleBlock from 'components/single-block';
 import HasMoreTip from 'components/has-more-tip';
+import Toast from 'components/toast';
 // mixins
 import LoadMore from 'mixins/loadMore';
 export default class Index extends wepy.page {
+  page = 1;
+  // 获取数据
+  getList() {
+    post(`${Host}new/lists`, {
+      page: this.page
+    })
+      .then(res => {
+        let { banner, lists } = res;
+        banner = banner || [];
+        lists = lists || [];
+        let listsCache = this.lists;
+        listsCache = listsCache.concat(lists);
+        if (this.page === 1) {
+          this.banner = banner;
+        }
+        this.hasMore = !!res.has_more_page;
+        this.lists = listsCache;
+        this.page += 1;
+        this.$apply();
+      })
+      .catch(err => {
+        this.$invoke('toast', 'show', err);
+      });
+  }
   config = {
     navigationBarTitleText: '首页'
   };
   components = {
     header: Header,
-    singleBlock: SingleBlock,
+    toast: Toast,
     hasMoreTip: HasMoreTip
   };
   data = {
-    swipers: [{ id: '1', url: '/images/excits/swiper.png' }],
-    lists: [
-      {
-        id: '1',
-        title:
-          '2018世界区块链创业联盟百城链享-高峰论坛-6月10日登陆中国6月10日登陆中国6月10日登陆中国6月10日登陆中国',
-        from: '花生区块链',
-        time: '55分钟前'
-      },
-      {
-        id: '1',
-        title: '2018世界区块链创业联盟百城链享-高峰论坛-6月10日登陆中国',
-        from: '花生区块链',
-        time: '55分钟前'
-      },
-      {
-        id: '1',
-        title: '2018世界区块链创业联盟百城链享-高峰论坛-6月10日登陆中国',
-        from: '花生区块链',
-        time: '55分钟前'
-      }
-    ]
+    banner: [],
+    hasMore: true,
+    lists: []
   };
-
+  onShow() {
+    this.getList();
+  }
   mixins = [LoadMore];
 
   methods = {};

@@ -71,6 +71,7 @@
 </template>
 <script>
 import wepy from 'wepy';
+// import { Host } from 'config';
 import { setStorage, isLogin } from 'utils';
 export default class LoginAction extends wepy.component {
   data = {
@@ -83,20 +84,42 @@ export default class LoginAction extends wepy.component {
       this.show = true;
     }
   }
+  pushEncryptedData(params) {
+    wepy.request('post', {}).then(res => {
+      console.log(res);
+    });
+  }
   methods = {
     getUserInfo(e) {
       let { detail } = e;
+      console.log(e);
       detail = detail || {};
-      let { signature, userInfo } = detail;
+      let { signature, userInfo, encryptedData, iv } = detail;
       userInfo = userInfo || {};
       signature = signature || '';
       userInfo.signature = signature;
+      userInfo.encryptedData = encryptedData;
+      userInfo.iv = iv;
       let res = setStorage('userInfo', userInfo);
       if (res) {
         this.show = false;
         this.$apply();
         this.$parent.userInfo = userInfo;
         this.$parent.$apply();
+        // 登录
+        /* post(`${Host}login/getWxSessinKeyByCode`, {
+          code: signature
+        }).then(res => {
+          console.log(res);
+        }); */
+        /* post(`${Host}login/index`, {
+          encryptedData: encryptedData,
+          iv: iv
+        }).then(res => {
+          console.log(res);
+        }).catch(err => {
+          console.log(err);
+        }); */
       }
     }
   };
