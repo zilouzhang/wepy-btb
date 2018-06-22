@@ -1,13 +1,20 @@
 <style lang="less">
 page {
-  background: #f4f4f8;
+  background: #fff;
   color: #333;
+}
+.container {
+  background: #fff;
+  box-sizing: border-box;
+  line-height: 1.6;
+  font-size: 28rpx;
+  padding: 20rpx 30rpx;
 }
 </style>
 <template>
   <view class="container">
-关于我们
-
+花生区块链是一家致力深耕区块链垂直传播领域的媒体，我们不仅是真实内容的搬运工，更是优质内容的生产者。<br />
+花生区块链将通过以视频为主，文字、图片等多样性的内容生产方式让更多的人了解区块链，致力区块链，共同推动区块链行业发展。
   </view>
 </template>
 <script>

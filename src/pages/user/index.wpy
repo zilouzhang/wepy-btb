@@ -106,9 +106,10 @@ export default class UserCenter extends wepy.page {
     onShareAppMessage(res) {
       if (res.from === 'button') {
         return {
-          title: '微信小程序联盟',
-          desc: '最具人气的小程序开发联盟!',
-          path: '/page/user?id=123',
+          title: '花生区块链',
+          desc: '花生区块链是一家致力深耕区块链垂直传播领域的媒体',
+          path: '/pages/index',
+          imageUrl:'/images/detail/head.png',
           success: function() {}
         };
       }
