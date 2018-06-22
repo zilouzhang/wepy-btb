@@ -2,7 +2,7 @@
   <view class="container">
     <header :banner.sync="banner">
       <view class="header-title" slot="title">
-        <image src="/images/excits/title.png" />
+        <image src="/images/index/title.png" />
       </view>
     </header>
     <excitsLists :lists.sync="lists" />
