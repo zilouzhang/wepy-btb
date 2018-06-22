@@ -72,7 +72,7 @@
 <script>
 import wepy from 'wepy';
 // import { Host } from 'config';
-import { setStorage, isLogin } from 'utils';
+import { setStorage, isLogin, getWxCode } from 'utils';
 export default class LoginAction extends wepy.component {
   data = {
     show: false
@@ -107,6 +107,17 @@ export default class LoginAction extends wepy.component {
         this.$parent.userInfo = userInfo;
         this.$parent.$apply();
         // 登录
+        getWxCode()
+          .then(res => {
+            post(`${Host}login/getWxSessinKeyByCode`, {
+              code: res
+            }).then(res => {
+              console.log(res);
+            });
+          })
+          .catch(err => {
+            console.log(err);
+          });
         /* post(`${Host}login/getWxSessinKeyByCode`, {
           code: signature
         }).then(res => {

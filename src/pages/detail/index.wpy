@@ -108,7 +108,7 @@ export default class Detail extends wepy.page {
         ScreenWidth,
         linePicHeightPx
       );
-      ctx.draw(false, this.getTemplateImage('ds'));
+      ctx.draw(true);
     },
     saveImage() {
       // 保存图片
