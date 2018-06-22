@@ -4,12 +4,10 @@ page,
 .container {
   background: #fff;
 }
-.head {
-  background-color: rgb(254, 219, 0);
-  height: 463rpx;
-  image {
-    width: 750rpx;
-  }
+.head-banner {
+  display: block;
+  margin: 0 auto;
+  width: 750rpx;
 }
 .title {
   padding: 68rpx 30rpx 46rpx;
@@ -46,14 +44,12 @@ page,
 </style>
 <template>
   <view class="container">
-    <view class="head">
-      <image data-id="head" src="/images/detail/head.png" style="height: {{headPicHeight}}rpx;" @tap="drawImg" @load="resizePic"/>
-    </view>
+    <image class="head-banner" src="/images/detail/head.png" style="height: {{headPicHeight}}rpx;" @tap="drawImg" @load="resizePic" />
     <view class="title">{{title}}</view>
     <view class="timer">{{timer}}</view>
     <import src="../../wxParse/wxParse.wxml" />
     <view class="article">
-      <template is="wxParse" data="{{wxParseData:content.nodes}}"/>
+      <template is="wxParse" data="{{wxParseData: content.nodes}}"/>
     </view>
     <view class="btns">
       <image src="/images/detail/share.png" />
@@ -67,10 +63,9 @@ page,
 <script>
 import wepy from 'wepy';
 import { Host } from 'config';
-import { ScreenHeight, ScreenWidth, get } from 'utils';
+import { ScreenWidth, get } from 'utils';
 import WxParse from 'wxParse/wxParse';
 // components
-// import Article from 'components/article';
 import Toast from 'components/toast';
 export default class Detail extends wepy.page {
   data = {
@@ -78,9 +73,7 @@ export default class Detail extends wepy.page {
     timer: '',
     content: '',
     showSaveBtn: false,
-    canvasHeight: ScreenHeight,
     headPicHeight: 0,
-    linePicHeight: 0,
     tempFilePath: null
   };
   components = {
@@ -88,17 +81,10 @@ export default class Detail extends wepy.page {
   };
   methods = {
     resizePic(e) {
-      console.log(e);
-      let { detail, currentTarget } = e;
+      let { detail } = e;
       let { width, height } = detail;
-      let { dataset } = currentTarget;
-      let { id } = dataset;
       let ratio = height / width * 750;
-      if (id === 'head') {
-        this.headPicHeight = ratio;
-      } else {
-        this.linePicHeight = ratio;
-      }
+      this.headPicHeight = ratio;
       this.$apply();
     },
     drawImg(e) {

@@ -4,7 +4,6 @@ export default class PageMixin extends wepy.mixin {
     this.loadMore();
   }
   loadMore() {
-    console.log(this.hasMore);
     if (!this.hasMore) {
       return false;
     }

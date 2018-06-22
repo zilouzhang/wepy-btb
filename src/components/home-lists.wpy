@@ -1,4 +1,7 @@
 <style lang="less">
+.lists {
+  padding-bottom: 30rpx;
+}
 .single-block {
   margin: 0 10rpx 4rpx;
   display: flex;
@@ -50,24 +53,28 @@
 }
 </style>
 <template>
-  <navigator url="/pages/detail/index?id={{data.id}}" class="single-block" hover-class="none">
-    <view class="single-block__info">
-      <view class="single-block__title">{{data.title}}</view>
-      <view class="single-block__sub">
-        <text>{{data.from}}</text>
-        <text>{{data.time}}</text>
-      </view>
-    </view>
-    <view class="single-block__pic">
-      <image src="/images/single-block.png" />
-    </view>
-  </navigator>
+  <view class="lists">
+    <block wx:for="{{lists}}" wx:key="{{index}}">
+      <navigator url="/pages/detail/index?id={{item.id}}" class="single-block" hover-class="none">
+        <view class="single-block__info">
+          <view class="single-block__title">{{item.title}}</view>
+          <view class="single-block__sub">
+            <text>{{item.from}}</text>
+            <text>{{item.time}}</text>
+          </view>
+        </view>
+        <view class="single-block__pic">
+          <image src="{{item.img}}" />
+        </view>
+      </navigator>
+    </block>
+  </view>
 </template>
 <script>
 import wepy from 'wepy';
-export default class SingleBlock extends wepy.component {
+export default class HomeLists extends wepy.component {
   props = {
-    data: Object
+    lists: Object
   };
 }
 </script>

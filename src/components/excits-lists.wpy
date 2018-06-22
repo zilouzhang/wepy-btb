@@ -1,5 +1,13 @@
 <style lang="less">
-  .tofu-block {
+.lists {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0 28rpx;
+}
+.tofu-block {
     margin-bottom: 25rpx;
     width: 334rpx;
     padding-bottom: 15rpx;
@@ -51,23 +59,27 @@
   }
 </style>
 <template>
-  <navigator url="/pages/detail/index" class="tofu-block" hover-class="none">
-    <view class="tofu-block__pic">
-      <image class="pic" src="/images/block-pic.png" />
-      <image class="cover" src="/images/common/play.png" />
-    </view>
-    <text class="tofu-block__title">沉默的羔鸡</text>
-    <view class="tofu-block__sub">
-      <text class="tofu-block__sub-from">绝地求生</text>
-      <image class="dot" src="/images/common/dot.png" />
-    </view>
-  </navigator>
+  <view class="lists">
+    <block wx:for="{{lists}}" wx:key="{{index}}">
+      <navigator url="/pages/detail/index?id={{item.id}}" class="tofu-block" hover-class="none">
+        <view class="tofu-block__pic">
+          <image class="pic" src="{{item.img}}" />
+          <image class="cover" src="/images/common/play.png" />
+        </view>
+        <text class="tofu-block__title">{{item.title}}</text>
+        <view class="tofu-block__sub">
+          <text class="tofu-block__sub-from">{{item.from}}</text>
+          <image class="dot" src="/images/common/dot.png" />
+        </view>
+      </navigator>
+    </block>
+  </view>
 </template>
 <script>
 import wepy from 'wepy';
-export default class TofuBlock extends wepy.component {
+export default class ExcitsLists extends wepy.component {
   props = {
-    data: Object
+    lists: Object
   };
 }
 </script>
