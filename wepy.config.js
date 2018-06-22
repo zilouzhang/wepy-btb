@@ -20,8 +20,7 @@ module.exports = {
       'utils': path.join(__dirname, 'src/utils'),
       'utils': path.join(__dirname, 'src/utils'),
       'config': path.join(__dirname, 'src/config'),
-      'wxParse': path.join(__dirname, 'src/wxParse'),
-      '@': path.join(__dirname, 'src')
+      'wxParse': path.join(__dirname, 'src/wxParse')
     },
     aliasFields: ['wepy', 'weapp'],
     modules: ['node_modules']
