@@ -66,7 +66,7 @@ page,
 <script>
 import wepy from 'wepy';
 import { Host } from 'config';
-import { get } from 'utils';
+import { get, post } from 'utils';
 import WxParse from 'wxParse/wxParse';
 // components
 import DetailCanvas from 'components/detail-canvas';
@@ -89,8 +89,8 @@ export default class Detail extends wepy.page {
   methods = {
     getSharePic() {
       // 获取文章二维码
-      get(`${Host}login/getWxcode`, {
-        page: 'pages/detail/index',
+      post(`${Host}login/getWxcode`, {
+        // page: 'pages/detail/index',
         scene: encodeURIComponent(this.id),
         width: 105
       })

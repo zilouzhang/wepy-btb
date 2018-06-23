@@ -13,7 +13,7 @@ export const post = (url, params) => {
         if (res.statusCode === 200 && res.data && res.data.code && res.data.code === 1000) {
           resolve(res.data.data);
         } else {
-          reject(res.data);
+          reject(res.data.msg);
         }
       }).catch(err => {
         reject('请求失败');
@@ -35,7 +35,7 @@ export const get = (url, params) => {
         if (res.statusCode === 200 && res.data && res.data.code && res.data.code === 1000) {
           resolve(res.data.data);
         } else {
-          reject(res.data);
+          reject(res.data.msg);
         }
       }).catch(err => {
         reject('请求失败');

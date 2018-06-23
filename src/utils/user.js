@@ -16,14 +16,22 @@ export const isLogin = () => {
 
 // get wx login code
 export const getWxCode = () => {
+  let userInfo = getStorage('userInfo');
   return new Promise((resolve, reject) => {
     wx.login({
       success: res => {
         post(`${Host}login/getWxSessinKeyByCode`, {
           code: res.code || ''
         }).then(res => {
-          console.log(res);
-          resolve(res);
+          post(`${Host}login/index`, {
+            sessionKey: res.session_key,
+            encryptedData: userInfo.encryptedData,
+            iv: userInfo.iv
+          }).then(res => {
+            resolve(res);
+          }).catch(err => {
+            reject(err);
+          });
         }).catch(err => {
           reject(err);
         });
