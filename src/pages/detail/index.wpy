@@ -90,7 +90,7 @@ export default class Detail extends wepy.page {
     getSharePic() {
       // 获取文章二维码
       post(`${Host}login/getWxcode`, {
-        // page: 'pages/detail/index',
+        page: 'pages/detail/index',
         scene: encodeURIComponent(this.id),
         width: 105
       })
