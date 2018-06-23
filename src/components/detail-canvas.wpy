@@ -86,12 +86,23 @@ export default class DetailCanvas extends wepy.component {
     savePic() {
       // 保存图片
       let that = this;
-      wepy.canvasToTempFilePath({
+      wx.canvasToTempFilePath({
         canvasId: 'ds',
         success: res => {
-          that.tempFilePath = res.tempFilePath;
-          that.$apply();
-          console.log(that.tempFilePath);
+          wx.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success: () => {
+              that.show = false;
+              that.$apply();
+              that.$emit('drawResult', '图片保存成功');
+            },
+            fail: () => {
+              that.$emit('drawResult', '图片保存失败');
+            }
+          });
+        },
+        fail: () => {
+          that.$emit('drawResult', '图片加载失败');
         }
       });
     },
@@ -107,10 +118,14 @@ export default class DetailCanvas extends wepy.component {
       this.drawImage(text, qrcode);
     }
   };
+  // 画图
   drawImage(text, qrcode) {
-    // 画图
     console.log(text, qrcode);
     const ctx = wepy.createCanvasContext('ds', this);
+    ctx.setFillStyle('white');
+    ctx.fillRect(0, 0, this.headerWidth, this.canvasHeight);
+    ctx.draw();
+    ctx.save();
     ctx.drawImage(
       '/images/detail/head.png',
       0,
@@ -139,8 +154,8 @@ export default class DetailCanvas extends wepy.component {
     ctx.save();
     ctx.draw(true);
   }
+  // 画文本
   drawText(ctx, text) {
-    // 画文本
     const textArrays = text.split('');
     let temp = '';
     let row = [];

@@ -1,5 +1,4 @@
 <style lang="less">
-@import '../../wxParse/wxParse.wxss';
 page,
 .container {
   background: #fff;
@@ -42,15 +41,16 @@ page,
   padding: 0;
   margin: 0 0 0 130rpx;
 }
+@import '../../wxParse/wxParse.wxss';
 </style>
 <template>
   <view class="container">
     <image class="head-banner" src="/images/detail/head.png"/>
     <view class="title">{{title}}</view>
     <view class="timer">{{timer}}</view>
-    <import src="../../wxParse/wxParse.wxml" />
     <view class="article">
-      <template is="wxParse" data="{{wxParseData: content.nodes}}"/>
+      <import src="../../wxParse/wxParse.wxml"/>
+      <template is="wxParse" data="{{wxParseData: htmlParserName.nodes}}"/>
     </view>
     <view class="btns">
       <image @tap="getSharePic" src="/images/detail/share.png" />
@@ -76,9 +76,8 @@ export default class Detail extends wepy.page {
     title: '',
     timer: '',
     desc: '', // 文章概要
-    content: '',
-    qrcode: '',
-    tempFilePath: null
+    htmlParserTpl: {},
+    qrcode: ''
   };
   components = {
     detailCanvas: DetailCanvas,
@@ -100,9 +99,13 @@ export default class Detail extends wepy.page {
         });
     }
   };
+  events = {
+    drawResult: err => {
+      this.$invoke('toast', 'show', err);
+    }
+  };
   // 获取文章数据
   getInit(id) {
-    let _self = this;
     get(`${Host}detail/info`, {
       aid: id
     })
@@ -112,9 +115,14 @@ export default class Detail extends wepy.page {
         this.title = title || '';
         this.timer = time || '';
         this.desc = desc || '';
-        content = content || '';
+        WxParse.wxParse(
+          'htmlParserName',
+          'html',
+          content,
+          this,
+          0
+        );
         this.$apply();
-        WxParse.wxParse('content', 'html', content, _self, 5);
       })
       .catch(err => {
         this.$invoke('toast', 'show', err);
