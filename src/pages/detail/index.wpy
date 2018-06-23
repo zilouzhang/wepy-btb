@@ -59,6 +59,7 @@ page,
       </button>
     </view>
     <detailCanvas />
+    <loading />
     <toast />
   </view>
 </template>
@@ -69,6 +70,7 @@ import { get } from 'utils';
 import WxParse from 'wxParse/wxParse';
 // components
 import DetailCanvas from 'components/detail-canvas';
+import Loading from 'components/loading';
 import Toast from 'components/toast';
 export default class Detail extends wepy.page {
   data = {
@@ -81,7 +83,8 @@ export default class Detail extends wepy.page {
   };
   components = {
     detailCanvas: DetailCanvas,
-    toast: Toast
+    toast: Toast,
+    loading: Loading
   };
   methods = {
     getSharePic() {
@@ -106,6 +109,7 @@ export default class Detail extends wepy.page {
   };
   // 获取文章数据
   getInit(id) {
+    this.$invoke('loading', 'handleAction', true);
     get(`${Host}detail/info`, {
       aid: id
     })
@@ -123,9 +127,11 @@ export default class Detail extends wepy.page {
           0
         );
         this.$apply();
+        this.$invoke('loading', 'handleAction', false);
       })
       .catch(err => {
         this.$invoke('toast', 'show', err);
+        this.$invoke('loading', 'handleAction', false);
       });
   }
   onLoad(e) {
