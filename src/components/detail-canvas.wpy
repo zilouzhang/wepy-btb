@@ -172,6 +172,9 @@ export default class DetailCanvas extends wepy.component {
       }
       temp += item;
     });
+    if (temp) {
+      row.push(temp);
+    }
     row.forEach((item, index) => {
       ctx.fillText(item, textOffsetLeft, textStartOffsetTop + (index + 1) * 20);
     });
