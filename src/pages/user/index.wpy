@@ -63,7 +63,7 @@
       </view>
     </view>
     <view class="menu-block">
-      <button open-type="share" class="menu-block__item">
+      <button open-type="share" class="menu-block__item" hover-class="none">
         <text class="left">分享</text>
         <image class="gray_arrow" src="/images/gray_arrow.png" />
       </button>
@@ -109,12 +109,11 @@ export default class UserCenter extends wepy.page {
           title: '花生区块链',
           desc: '花生区块链是一家致力深耕区块链垂直传播领域的媒体',
           path: '/pages/index',
-          imageUrl:'/images/detail/head.png',
+          imageUrl: '/images/detail/head.png',
           success: function() {}
         };
       }
     }
   };
-  // mixins = [Login];
 }
 </script>

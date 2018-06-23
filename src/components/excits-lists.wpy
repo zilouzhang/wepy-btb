@@ -64,7 +64,7 @@
       <navigator url="/pages/detail/index?id={{item.id}}" class="tofu-block" hover-class="none">
         <view class="tofu-block__pic">
           <image class="pic" src="{{item.img}}" />
-          <image class="cover" src="/images/common/play.png" />
+          <!-- <image class="cover" src="/images/common/play.png" /> -->
         </view>
         <text class="tofu-block__title">{{item.title}}</text>
         <view class="tofu-block__sub">

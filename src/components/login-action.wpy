@@ -84,15 +84,10 @@ export default class LoginAction extends wepy.component {
       this.show = true;
     }
   }
-  pushEncryptedData(params) {
-    wepy.request('post', {}).then(res => {
-      console.log(res);
-    });
-  }
   methods = {
     getUserInfo(e) {
       let { detail } = e;
-      console.log(e);
+      // console.log(e);
       detail = detail || {};
       let { signature, userInfo, encryptedData, iv } = detail;
       userInfo = userInfo || {};
@@ -109,28 +104,11 @@ export default class LoginAction extends wepy.component {
         // 登录
         getWxCode()
           .then(res => {
-            post(`${Host}login/getWxSessinKeyByCode`, {
-              code: res
-            }).then(res => {
-              console.log(res);
-            });
+            console.log(res);
           })
           .catch(err => {
             console.log(err);
           });
-        /* post(`${Host}login/getWxSessinKeyByCode`, {
-          code: signature
-        }).then(res => {
-          console.log(res);
-        }); */
-        /* post(`${Host}login/index`, {
-          encryptedData: encryptedData,
-          iv: iv
-        }).then(res => {
-          console.log(res);
-        }).catch(err => {
-          console.log(err);
-        }); */
       }
     }
   };

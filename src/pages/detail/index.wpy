@@ -1,5 +1,5 @@
 <style lang="less">
-@import "../../wxParse/wxParse.wxss";
+@import '../../wxParse/wxParse.wxss';
 page,
 .container {
   background: #fff;
@@ -8,16 +8,17 @@ page,
   display: block;
   margin: 0 auto;
   width: 750rpx;
+  height: 454rpx;
 }
 .title {
   padding: 68rpx 30rpx 46rpx;
-  font-size: 34rpx;
+  font-size: 40rpx;
   font-weight: 700;
   color: #1f1a17;
-  line-height: 40rpx;
+  line-height: 50rpx;
 }
 .timer {
-  font-size: 28rpx;
+  font-size: 32rpx;
   color: #1f1a17;
   text-align: center;
 }
@@ -44,7 +45,7 @@ page,
 </style>
 <template>
   <view class="container">
-    <image class="head-banner" src="/images/detail/head.png" style="height: {{headPicHeight}}rpx;" @tap="drawImg" @load="resizePic" />
+    <image class="head-banner" src="/images/detail/head.png"/>
     <view class="title">{{title}}</view>
     <view class="timer">{{timer}}</view>
     <import src="../../wxParse/wxParse.wxml" />
@@ -52,108 +53,77 @@ page,
       <template is="wxParse" data="{{wxParseData: content.nodes}}"/>
     </view>
     <view class="btns">
-      <image src="/images/detail/share.png" />
+      <image @tap="getSharePic" src="/images/detail/share.png" />
       <button open-type="share" hover-class="none">
         <image src="/images/detail/send.png" />
       </button>
     </view>
+    <detailCanvas />
     <toast />
   </view>
 </template>
 <script>
 import wepy from 'wepy';
 import { Host } from 'config';
-import { ScreenWidth, get } from 'utils';
+import { get } from 'utils';
 import WxParse from 'wxParse/wxParse';
 // components
+import DetailCanvas from 'components/detail-canvas';
 import Toast from 'components/toast';
 export default class Detail extends wepy.page {
   data = {
+    id: '0', // 文章id
     title: '',
     timer: '',
+    desc: '', // 文章概要
     content: '',
-    showSaveBtn: false,
-    headPicHeight: 0,
+    qrcode: '',
     tempFilePath: null
   };
   components = {
+    detailCanvas: DetailCanvas,
     toast: Toast
   };
   methods = {
-    resizePic(e) {
-      let { detail } = e;
-      let { width, height } = detail;
-      let ratio = height / width * 750;
-      this.headPicHeight = ratio;
-      this.$apply();
-    },
-    drawImg(e) {
-      // 画图
-      const headPicHeightPx = this.headPicHeight * (ScreenWidth / 750);
-      const linePicHeightPx = this.linePicHeight * (ScreenWidth / 750);
-      console.log(headPicHeightPx);
-      const ctx = wepy.createCanvasContext('ds');
-      ctx.drawImage(
-        '/images/detail/head.png',
-        0,
-        0,
-        ScreenWidth,
-        headPicHeightPx
-      );
-      ctx.save();
-      ctx.drawImage(
-        '/images/detail/line.png',
-        0,
-        headPicHeightPx - 100,
-        ScreenWidth,
-        linePicHeightPx
-      );
-      ctx.draw(true);
-    },
-    saveImage() {
-      // 保存图片
-      let that = this;
-      if (that.tempFilePath) {
-        wepy.saveFile({
-          tempFilePath: that.tempFilePath,
-          success: res => {
-            console.log(res.savedFilePath);
-          }
+    getSharePic() {
+      // 获取文章二维码
+      get(`${Host}login/getWxcode`, {
+        page: 'pages/detail/index',
+        scene: encodeURIComponent(this.id),
+        width: 105
+      })
+        .then(res => {
+          this.$broadcast('getQrcode', this.desc, res);
+        })
+        .catch(err => {
+          this.$invoke('toast', 'show', err || '获取分享参数失败');
         });
-      }
     }
   };
-  getTemplateImage(cId) {
-    // 从canvas导出图片
-    let that = this;
-    wepy.canvasToTempFilePath({
-      canvasId: cId,
-      success: res => {
-        that.showSaveBtn = true;
-        that.tempFilePath = res.tempFilePath;
-        that.$apply();
-        console.log(that.tempFilePath);
-      }
-    });
-  }
   // 获取文章数据
   getInit(id) {
     let _self = this;
     get(`${Host}detail/info`, {
       aid: id
-    }).then(res => {
-      let { title, time, content } = res;
-      this.title = title || '';
-      this.timer = time || '';
-      content = content || '';
-      this.$apply();
-      WxParse.wxParse('content', 'html', content, _self, 5);
-    }).catch(err => {
-      this.$invoke('toast', 'show', err);
-    });
+    })
+      .then(res => {
+        let { title, time, desc, content } = res;
+        this.id = id;
+        this.title = title || '';
+        this.timer = time || '';
+        this.desc = desc || '';
+        content = content || '';
+        this.$apply();
+        WxParse.wxParse('content', 'html', content, _self, 5);
+      })
+      .catch(err => {
+        this.$invoke('toast', 'show', err);
+      });
   }
   onLoad(e) {
-    this.getInit(e.id);
+    console.log(e);
+    let { id } = e;
+    this.getInit(id);
   }
 }
 </script>

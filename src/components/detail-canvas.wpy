@@ -1,0 +1,179 @@
+<style lang="less">
+.canvas-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.45);
+  box-sizing: border-box;
+  &[data-active='true'] {
+    display: block;
+  }
+  &__box {
+    position: relative;
+    margin: 70rpx auto 0;
+    width: 650rpx;
+    background: #fff;
+    overflow: auto;
+  }
+  canvas {
+    display: block;
+    width: 650rpx;
+  }
+  .close-btn {
+    position: absolute;
+    top: 42rpx;
+    right: 28rpx;
+    z-index: 999;
+    width: 56rpx;
+    height: 56rpx;
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 50%;
+    overflow: hidden;
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 6rpx;
+      height: 36rpx;
+      background: #fff;
+    }
+    &::before {
+      transform:  translate(-50%, -50%) rotate(45deg);
+    }
+    &::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+  .save-btn {
+    position: absolute;
+    bottom: 52rpx;
+    left: 50%;
+    width: 650rpx;
+    height: 96rpx;
+    line-height: 96rpx;
+    font-size: 32rpx;
+    color: #fff;
+    background: #f9cf00;
+    border-radius: 10rpx;
+    overflow: hidden;
+    text-align: center;
+    transform: translate(-50%, 0);
+  }
+}
+</style>
+<template>
+  <view class="canvas-modal" data-active="{{show}}">
+    <view class="canvas-modal__box" style="height: {{canvasHeight}}px;">
+      <canvas style="height: {{canvasHeight}}px" canvas-id="ds" disable-scroll="{{true}}" />
+    </view>
+    <view class="close-btn" @tap="close" />
+    <view class="save-btn" @tap="savePic">点击保存图片，然后进行分享</view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import { ScreenWidth } from 'utils';
+export default class DetailCanvas extends wepy.component {
+  data = {
+    show: false,
+    headerHeight: Math.floor(393 * ScreenWidth / 750),
+    headerWidth: Math.floor(650 * ScreenWidth / 750),
+    footerHeight: Math.floor(418 * ScreenWidth / 750),
+    footerWidth: Math.floor(650 * ScreenWidth / 750),
+    textHeight: Math.floor(300 * ScreenWidth / 750),
+    qrcodeWidth: Math.floor(210 * ScreenWidth / 750),
+    qrcodeOffsetLeft:
+      Math.floor(650 * ScreenWidth / 750) -
+      (Math.floor(210 * ScreenWidth / 750) +
+        Math.floor(28 * ScreenWidth / 750)),
+    canvasHeight:
+      Math.floor(393 * ScreenWidth / 750) +
+      Math.floor(300 * ScreenWidth / 750) +
+      Math.floor(250 * ScreenWidth / 750)
+  };
+  methods = {
+    savePic() {
+      // 保存图片
+      let that = this;
+      wepy.canvasToTempFilePath({
+        canvasId: 'ds',
+        success: res => {
+          that.tempFilePath = res.tempFilePath;
+          that.$apply();
+          console.log(that.tempFilePath);
+        }
+      });
+    },
+    close() {
+      this.show = false;
+      this.$apply();
+    }
+  };
+  events = {
+    getQrcode: (text, qrcode) => {
+      this.show = true;
+      this.$apply();
+      this.drawImage(text, qrcode);
+    }
+  };
+  drawImage(text, qrcode) {
+    // 画图
+    console.log(text, qrcode);
+    const ctx = wepy.createCanvasContext('ds');
+    ctx.drawImage(
+      '/images/detail/head.png',
+      0,
+      0,
+      this.headerWidth,
+      this.headerHeight
+    );
+    ctx.save();
+    // draw text
+    this.drawText(ctx, text);
+    ctx.drawImage(
+      '/images/detail/footer.png',
+      0,
+      this.canvasHeight - this.footerHeight,
+      this.footerWidth,
+      this.footerHeight
+    );
+    ctx.save();
+    ctx.drawImage(
+      '/images/detail/qrcode.png',
+      this.qrcodeOffsetLeft,
+      this.canvasHeight - (this.qrcodeWidth + 5),
+      this.qrcodeWidth,
+      this.qrcodeWidth
+    );
+    ctx.save();
+    ctx.draw(true);
+  }
+  drawText(ctx, text) {
+    // 画文本
+    const textArrays = text.split('');
+    let temp = '';
+    let row = [];
+    const textOffsetLeft = Math.floor(28 * ScreenWidth / 750);
+    const limitWidth =
+      Math.floor(650 * ScreenWidth / 750) - (textOffsetLeft * 2 + 10);
+    const textStartOffsetTop =
+      this.headerHeight + Math.floor(20 * ScreenWidth / 750);
+    ctx.setFontSize(14);
+    textArrays.forEach(item => {
+      if (ctx.measureText(temp).width > limitWidth) {
+        row.push(temp);
+        temp = '';
+      }
+      temp += item;
+    });
+    row.forEach((item, index) => {
+      ctx.fillText(item, textOffsetLeft, textStartOffsetTop + (index + 1) * 20);
+    });
+  }
+}
+</script>

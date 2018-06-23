@@ -72,7 +72,6 @@ export default class extends wepy.app {
     this.use('requestfix');
   }
 
-  onLaunch() {
-  }
+  onLaunch() {}
 }
 </script>

@@ -6,7 +6,7 @@
   &-top {
     display: block;
     width: 750rpx;
-    height: 193rpx;
+    height: 125rpx;
   }
   &-swiper {
     font-size: 0;

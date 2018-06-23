@@ -1,6 +1,8 @@
-import wepy from 'wepy';
+import { Host } from 'config';
+import { post } from './request';
 import {
-  getStorage
+  getStorage,
+  setStorage
 } from './storage';
 
 // 判断是否登录
@@ -15,9 +17,16 @@ export const isLogin = () => {
 // get wx login code
 export const getWxCode = () => {
   return new Promise((resolve, reject) => {
-    wepy.login({
-      success: (res) => {
-        resolve(res.code || '');
+    wx.login({
+      success: res => {
+        post(`${Host}login/getWxSessinKeyByCode`, {
+          code: res.code || ''
+        }).then(res => {
+          console.log(res);
+          resolve(res);
+        }).catch(err => {
+          reject(err);
+        });
       },
       fail: () => {
         reject('获取登录信息失败');
