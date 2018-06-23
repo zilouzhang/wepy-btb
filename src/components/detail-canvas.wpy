@@ -22,47 +22,31 @@
     display: block;
     width: 650rpx;
   }
-  .close-btn {
-    position: absolute;
-    top: 42rpx;
-    right: 28rpx;
-    z-index: 999;
-    width: 56rpx;
-    height: 56rpx;
-    background: rgba(0, 0, 0, 0.75);
-    border-radius: 50%;
-    overflow: hidden;
-    &::before,
-    &::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 6rpx;
-      height: 36rpx;
-      background: #fff;
-    }
-    &::before {
-      transform:  translate(-50%, -50%) rotate(45deg);
-    }
-    &::after {
-      transform: translate(-50%, -50%) rotate(-45deg);
-    }
+  &__btns {
+    margin-top: 40rpx;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   }
+  .close-btn,
   .save-btn {
-    position: absolute;
-    bottom: 52rpx;
-    left: 50%;
-    width: 650rpx;
+    width: 300rpx;
     height: 96rpx;
     line-height: 96rpx;
     font-size: 32rpx;
-    color: #fff;
-    background: #f9cf00;
     border-radius: 10rpx;
     overflow: hidden;
     text-align: center;
-    transform: translate(-50%, 0);
+  }
+  .save-btn {
+    color: #fff;
+    background: #f9cf00;
+  }
+  .close-btn {
+    margin-right: 50rpx;
+    color: #333;
+    background: #fff;
   }
 }
 </style>
@@ -71,8 +55,10 @@
     <view class="canvas-modal__box" style="height: {{canvasHeight}}px;">
       <canvas style="height: {{canvasHeight}}px" canvas-id="ds" disable-scroll="{{true}}" />
     </view>
-    <view class="close-btn" @tap="close" />
-    <view class="save-btn" @tap="savePic">点击保存图片，然后进行分享</view>
+    <view class="canvas-modal__btns">
+      <view class="close-btn" @tap="close">取消</view>
+      <view class="save-btn" @tap="savePic">保存图片</view>
+    </view>
   </view>
 </template>
 <script>
@@ -124,7 +110,7 @@ export default class DetailCanvas extends wepy.component {
   drawImage(text, qrcode) {
     // 画图
     console.log(text, qrcode);
-    const ctx = wepy.createCanvasContext('ds');
+    const ctx = wepy.createCanvasContext('ds', this);
     ctx.drawImage(
       '/images/detail/head.png',
       0,
