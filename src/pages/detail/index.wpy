@@ -136,8 +136,8 @@ export default class Detail extends wepy.page {
   }
   onLoad(e) {
     console.log(e);
-    let { id } = e;
-    this.getInit(id);
+    let { id, scene } = e;
+    this.getInit(scene ? scene : id);
   }
 }
 </script>
