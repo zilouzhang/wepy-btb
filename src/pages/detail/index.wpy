@@ -49,7 +49,6 @@ page,
     <view class="title">{{title}}</view>
     <view class="timer">{{timer}}</view>
     <view class="article">
-      <video src="https://player.youku.com/player.php/sid/XMzY4NTUzMTA0OA==/v.swf"></video>
       <import src="../../wxParse/wxParse.wxml"/>
       <template is="wxParse" data="{{wxParseData: htmlParserName.nodes}}"/>
     </view>

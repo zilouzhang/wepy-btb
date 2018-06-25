@@ -13,7 +13,7 @@
 <template name="wxParseVideo">
   <!--增加video标签支持，并循环添加-->
   <view class="{{item.classStr}} wxParse-{{item.tag}}" style="{{item.styleStr}}">
-    <video class="{{item.classStr}} wxParse-{{item.tag}}-video" src="{{item.attr.src}}"></video>
+    <video custom-cache="{{false}}" poster="" class="{{item.classStr}} wxParse-{{item.tag}}-video" src="{{item.attr.src}}"></video>
   </view>
 </template>
 
@@ -77,7 +77,11 @@
     <block wx:elif="{{item.tag == 'video'}}">
       <template is="wxParseVideo" data="{{item}}" />
     </block>
+    <block wx:elif="{{item.tag == 'embed'}}">
+      <block wx:for="{{item.nodes}}">
 
+      </block>
+    </block>
     <!--img类型-->
     <block wx:elif="{{item.tag == 'img'}}">
       <template is="wxParseImg" data="{{item}}" />
@@ -159,7 +163,7 @@
     </block>
 
     <!--video类型-->
-    <block wx:elif="{{item.tag == 'video'}}">
+    <block wx:elif="{{item.tag == 'video' || item.tag == 'embed'}}">
       <template is="wxParseVideo" data="{{item}}" />
     </block>
 
