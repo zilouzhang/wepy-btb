@@ -10,6 +10,9 @@
   }
   &-swiper {
     font-size: 0;
+    swiper {
+      height: auto;
+    }
     image {
       display: block;
       width: 750rpx;
@@ -32,7 +35,7 @@
   <view class="header">
     <image class="header-top" src="/images/header.png"  />
     <view class="header-swiper">
-      <swiper indicator-dots="true">
+      <swiper indicator-dots="{{!!banner.length > 0 ? true : false}}" style="height: {{banner[0].height}}">
         <repeat for="{{banner}}" item="list" key="index">
           <swiper-item>
             <image model="aspectFit" data-id="{{list.id}}" style="height: {{list.height}}" lazy-load="true" src="{{list.img}}" @load="resizePic" />

@@ -49,6 +49,7 @@ page,
     <view class="title">{{title}}</view>
     <view class="timer">{{timer}}</view>
     <view class="article">
+      <video src="https://player.youku.com/player.php/sid/XMzY4NTUzMTA0OA==/v.swf"></video>
       <import src="../../wxParse/wxParse.wxml"/>
       <template is="wxParse" data="{{wxParseData: htmlParserName.nodes}}"/>
     </view>
@@ -119,13 +120,10 @@ export default class Detail extends wepy.page {
         this.title = title || '';
         this.timer = time || '';
         this.desc = desc || '';
-        WxParse.wxParse(
-          'htmlParserName',
-          'html',
-          content,
-          this,
-          0
-        );
+        wepy.setNavigationBarTitle({
+          title: title
+        });
+        WxParse.wxParse('htmlParserName', 'html', content, this, 0);
         this.$apply();
         this.$invoke('loading', 'handleAction', false);
       })
@@ -135,9 +133,13 @@ export default class Detail extends wepy.page {
       });
   }
   onLoad(e) {
-    console.log(e);
+    // console.log(e);
     let { id, scene } = e;
-    this.getInit(scene ? scene : id);
+    if (scene) {
+      this.getInit(scene);
+    } else {
+      this.getInit(id);
+    }
   }
 }
 </script>
