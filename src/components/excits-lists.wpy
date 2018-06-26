@@ -20,7 +20,7 @@
       .pic {
         display: block;
         width: 334rpx;
-        height: 250rpx;
+        height: 188rpx;
       }
       .cover {
         position: absolute;
@@ -34,7 +34,7 @@
     &__title {
       display: block;
       margin: 15rpx 24rpx;
-      font-size: 32rpx;
+      font-size:28rpx;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
@@ -44,7 +44,7 @@
       padding: 0 24rpx;
       font-size: 0;
       &-from {
-        font-size: 28rpx;
+        font-size: 24rpx;
         color: #666;
       }
       .dot {
@@ -69,7 +69,7 @@
         <text class="tofu-block__title">{{item.title}}</text>
         <view class="tofu-block__sub">
           <text class="tofu-block__sub-from">{{item.from}}</text>
-          <image class="dot" src="/images/common/dot.png" />
+          <!-- <image class="dot" src="/images/common/dot.png" /> -->
         </view>
       </navigator>
     </block>

@@ -42,12 +42,11 @@
   &__pic {
     font-size: 0;
     width: 214rpx;
-    height: 158rpx;
     overflow: hidden;
     image {
       display: block;
       width: 214rpx;
-      height: 158rpx;
+      height: 120rpx;
     }
   }
 }
