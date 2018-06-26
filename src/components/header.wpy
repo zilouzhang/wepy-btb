@@ -33,7 +33,7 @@
 </style>
 <template>
   <view class="header">
-    <image class="header-top" src="/images/header.png"  />
+    <!-- <image class="header-top" src="/images/header.png"  /> -->
     <view class="header-swiper">
       <swiper indicator-dots="{{banner.length > 0 ? true : false}}" style="height: {{banner[0].height}}" autoplay="{{banner.length > 0 ? true : false}}">
         <repeat for="{{banner}}" item="list" key="index">

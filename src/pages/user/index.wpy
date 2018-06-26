@@ -106,10 +106,10 @@ export default class UserCenter extends wepy.page {
     onShareAppMessage(res) {
       if (res.from === 'button') {
         return {
-          title: '花生区块链',
-          desc: '花生区块链是一家致力深耕区块链垂直传播领域的媒体',
+          title: '花生财经',
+          desc: '花生财经是一家致力深耕财经垂直传播领域的媒体',
           path: '/pages/index',
-          imageUrl: '/images/detail/head.png',
+          imageUrl: '/images/detail/logo.png',
           success: function() {}
         };
       }
