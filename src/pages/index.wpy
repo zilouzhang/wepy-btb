@@ -62,7 +62,9 @@ export default class Index extends wepy.page {
     lists: []
   };
   onShow() {
-    this.getList();
+    if (this.hasMore) {
+      this.getList();
+    }
   }
   mixins = [LoadMore];
 

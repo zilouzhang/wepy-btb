@@ -62,7 +62,9 @@ export default class Excits extends wepy.page {
   };
   mixins = [LoadMore];
   onShow() {
-    this.getList();
+    if (this.hasMore) {
+      this.getList();
+    }
   }
 }
 </script>
