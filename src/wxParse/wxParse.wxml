@@ -77,11 +77,6 @@
     <block wx:elif="{{item.tag == 'video'}}">
       <template is="wxParseVideo" data="{{item}}" />
     </block>
-    <block wx:elif="{{item.tag == 'embed'}}">
-      <block wx:for="{{item.nodes}}">
-
-      </block>
-    </block>
     <!--img类型-->
     <block wx:elif="{{item.tag == 'img'}}">
       <template is="wxParseImg" data="{{item}}" />
@@ -163,7 +158,7 @@
     </block>
 
     <!--video类型-->
-    <block wx:elif="{{item.tag == 'video' || item.tag == 'embed'}}">
+    <block wx:elif="{{item.tag == 'video'}}">
       <template is="wxParseVideo" data="{{item}}" />
     </block>
 

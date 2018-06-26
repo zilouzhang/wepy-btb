@@ -44,6 +44,8 @@ export default class Excits extends wepy.page {
         this.$apply();
       })
       .catch(err => {
+        this.hasMore = false;
+        this.$apply();
         this.$invoke('toast', 'show', err);
       });
   }

@@ -66,7 +66,7 @@ page,
 <script>
 import wepy from 'wepy';
 import { Host } from 'config';
-import { get, post } from 'utils';
+import { get, post, getWxcode, isLogin } from 'utils';
 import WxParse from 'wxParse/wxParse';
 // components
 import DetailCanvas from 'components/detail-canvas';
@@ -88,18 +88,15 @@ export default class Detail extends wepy.page {
   };
   methods = {
     getSharePic() {
-      // 获取文章二维码
-      post(`${Host}login/getWxcode`, {
-        page: 'pages/detail/index',
-        scene: encodeURIComponent(this.id),
-        width: 105
-      })
-        .then(res => {
-          this.$broadcast('getQrcode', this.desc, res);
-        })
-        .catch(err => {
+      if (isLogin()) {
+        this.getDetailQrcode();
+      } else {
+        getWxcode().then(() => {
+          this.getDetailQrcode();
+        }).catch(err => {
           this.$invoke('toast', 'show', err || '获取分享参数失败');
         });
+      }
     }
   };
   events = {
@@ -107,6 +104,21 @@ export default class Detail extends wepy.page {
       this.$invoke('toast', 'show', err);
     }
   };
+  // 获取当前文章的二维码图片
+  getDetailQrcode() {
+    // 获取文章二维码
+    post(`${Host}login/getWxcode`, {
+      page: 'pages/detail/index',
+      scene: encodeURIComponent(this.id),
+      width: 105
+    })
+      .then(res => {
+        this.$broadcast('getQrcode', this.desc, res);
+      })
+      .catch(err => {
+        this.$invoke('toast', 'show', err || '获取分享参数失败');
+      });
+  }
   // 获取文章数据
   getInit(id) {
     this.$invoke('loading', 'handleAction', true);
