@@ -84,7 +84,6 @@ function html2json(html, bindName) {
                 node: 'element',
                 tag: tag,
             };
-
             if (bufArray.length === 0) {
                 node.index = index.toString()
                 index += 1
@@ -201,13 +200,14 @@ function html2json(html, bindName) {
             // merge into parent tag
             var node = bufArray.shift();
             if (node.tag !== tag) console.error('invalid state: mismatch end tag');
-
             //当有缓存source资源时于于video补上src资源
             if(node.tag === 'video' && results.source){
                 node.attr.src = results.source;
                 delete results.source;
             }
-            
+            if (node.tag === 'video' && node.attr.src) {
+                node.attr.src = decodeURIComponent(node.attr.src);
+            }
             if (bufArray.length === 0) {
                 results.nodes.push(node);
             } else {
