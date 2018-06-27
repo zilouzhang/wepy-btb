@@ -7,7 +7,6 @@ page,
   display: block;
   margin: 0 auto;
   width: 750rpx;
-  height: 454rpx;
 }
 .title {
   padding: 68rpx 30rpx 46rpx;
@@ -45,7 +44,9 @@ page,
 </style>
 <template>
   <view class="container">
-    <!-- <image class="head-banner" src="/images/detail/head.png"/> -->
+    <block wx:if="{{banner}}">
+      <image class="head-banner" style="{{height: bannerHeight}}" src="{{banner}}"/>
+    </block>
     <view class="title">{{title}}</view>
     <view class="timer">{{timer}}</view>
     <view class="article">
@@ -75,6 +76,8 @@ import Toast from 'components/toast';
 export default class Detail extends wepy.page {
   data = {
     id: '0', // 文章id
+    banner: '',
+    bannerHeight: '0rpx', // banner高度
     title: '',
     timer: '',
     desc: '', // 文章概要
@@ -87,15 +90,25 @@ export default class Detail extends wepy.page {
     loading: Loading
   };
   methods = {
+    resizeBanner(e) {
+      // 调整 banner 图片高度
+      let { detail } = e;
+      detail = detail || {};
+      let { height, width } = detail;
+      this.bannerHeight = `${height / width * 750}rpx`;
+      this.$apply();
+    },
     getSharePic() {
       if (isLogin()) {
         this.getDetailQrcode();
       } else {
-        getWxcode().then(() => {
-          this.getDetailQrcode();
-        }).catch(err => {
-          this.$invoke('toast', 'show', err || '获取分享参数失败');
-        });
+        getWxcode()
+          .then(() => {
+            this.getDetailQrcode();
+          })
+          .catch(err => {
+            this.$invoke('toast', 'show', err || '获取分享参数失败');
+          });
       }
     }
   };
@@ -126,8 +139,9 @@ export default class Detail extends wepy.page {
       aid: id
     })
       .then(res => {
-        let { title, time, desc, content } = res;
+        let { banner, title, time, desc, content } = res;
         this.id = id;
+        this.banner = banner || '';
         this.title = title || '';
         this.timer = time || '';
         this.desc = desc || '';
