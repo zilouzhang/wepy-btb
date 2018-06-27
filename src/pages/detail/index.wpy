@@ -45,7 +45,7 @@ page,
 <template>
   <view class="container">
     <block wx:if="{{banner}}">
-      <image class="head-banner" style="height: {{bannerHeight}}" src="{{banner}}"/>
+      <image class="head-banner" @load="resizeBanner" style="height: {{bannerHeight}}" src="{{banner}}"/>
     </block>
     <view class="title">{{title}}</view>
     <view class="timer">{{timer}}</view>
@@ -139,9 +139,9 @@ export default class Detail extends wepy.page {
       aid: id
     })
       .then(res => {
-        let { banner, title, time, desc, content } = res;
+        let { img, title, time, desc, content } = res;
         this.id = id;
-        this.banner = banner || '';
+        this.banner = img || '';
         this.title = title || '';
         this.timer = time || '';
         this.desc = desc || '';
