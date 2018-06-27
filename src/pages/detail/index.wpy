@@ -45,7 +45,7 @@ page,
 </style>
 <template>
   <view class="container">
-    <image class="head-banner" src="/images/detail/head.png"/>
+    <!-- <image class="head-banner" src="/images/detail/head.png"/> -->
     <view class="title">{{title}}</view>
     <view class="timer">{{timer}}</view>
     <view class="article">
