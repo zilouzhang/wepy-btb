@@ -33,11 +33,12 @@ page,
 }
 .btns image,
 .btns button {
+  margin: 0;
+  padding: 0;
   width: 222rpx;
   height: 104rpx;
 }
-.btns button {
-  padding: 0;
+.btns button + button {
   margin: 0 0 0 130rpx;
 }
 @import '../../wxParse/wxParse.wxss';
@@ -54,7 +55,9 @@ page,
       <template is="wxParse" data="{{wxParseData: htmlParserName.nodes}}"/>
     </view>
     <view class="btns">
-      <image @tap="getSharePic" src="/images/detail/share.png" />
+      <button open-type="getUserInfo" bindgetuserinfo="getUserInfo" hover-class="none">
+        <image src="/images/detail/share.png" />
+      </button>
       <button open-type="share" hover-class="none">
         <image src="/images/detail/send.png" />
       </button>
@@ -67,7 +70,7 @@ page,
 <script>
 import wepy from 'wepy';
 import { Host } from 'config';
-import { get, post, getWxcode, isLogin } from 'utils';
+import { get, post, getWxCode, setStorage } from 'utils';
 import WxParse from 'wxParse/wxParse';
 // components
 import DetailCanvas from 'components/detail-canvas';
@@ -98,12 +101,22 @@ export default class Detail extends wepy.page {
       this.bannerHeight = `${height / width * 750}rpx`;
       this.$apply();
     },
-    getSharePic() {
-      if (isLogin()) {
-        this.getDetailQrcode();
-      } else {
-        getWxcode()
-          .then(() => {
+    getUserInfo(e) {
+      let { detail } = e;
+      detail = detail || {};
+      let { signature, userInfo, encryptedData, iv } = detail;
+      userInfo = userInfo || {};
+      signature = signature || '';
+      userInfo.signature = signature;
+      userInfo.encryptedData = encryptedData;
+      userInfo.iv = iv;
+      let res = setStorage('userInfo', userInfo);
+      if (res) {
+        this.show = false;
+        this.$apply();
+        // 登录
+        getWxCode()
+          .then(res => {
             this.getDetailQrcode();
           })
           .catch(err => {
@@ -126,6 +139,7 @@ export default class Detail extends wepy.page {
       width: 105
     })
       .then(res => {
+        console.log(res);
         this.$broadcast('getQrcode', this.desc, res);
       })
       .catch(err => {

@@ -72,7 +72,7 @@
         <image class="gray_arrow" src="/images/gray_arrow.png" />
       </view>
     </view>
-    <login />
+    <login :show.sync="showLogin" />
   </view>
 </template>
 <script>
@@ -87,7 +87,8 @@ export default class UserCenter extends wepy.page {
     login: LoginAction
   };
   data = {
-    userInfo: getStorage('userInfo') || {}
+    showLogin: false,
+    userInfo: {}
   };
   state = {
     share: {
@@ -115,5 +116,12 @@ export default class UserCenter extends wepy.page {
       }
     }
   };
+  onShow() {
+    this.userInfo = getStorage('userInfo') || {};
+    if (!this.userInfo.nickName || this.userInfo.nickName === '') {
+      this.showLogin = true;
+    }
+    this.$apply();
+  }
 }
 </script>

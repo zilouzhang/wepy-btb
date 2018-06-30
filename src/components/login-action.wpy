@@ -72,22 +72,17 @@
 <script>
 import wepy from 'wepy';
 // import { Host } from 'config';
-import { setStorage, isLogin, getWxCode } from 'utils';
+import { setStorage, getWxCode } from 'utils';
 export default class LoginAction extends wepy.component {
-  data = {
-    show: false
-  };
-  onLoad() {
-    if (isLogin()) {
-      this.show = false;
-    } else {
-      this.show = true;
+  props = {
+    show: {
+      type: Boolean,
+      twoWay: true
     }
-  }
+  };
   methods = {
     getUserInfo(e) {
       let { detail } = e;
-      // console.log(e);
       detail = detail || {};
       let { signature, userInfo, encryptedData, iv } = detail;
       userInfo = userInfo || {};
