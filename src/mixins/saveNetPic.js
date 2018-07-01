@@ -7,9 +7,8 @@ export default class SaveNetPic extends wepy.mixin {
       wx.getImageInfo({
         src: value,
         success: res => {
-          console.log(res);
           setStorage(key, res.path);
-          resolve(res);
+          resolve(res.path);
         },
         fail: () => {
           reject(value);

@@ -120,6 +120,8 @@ export default class UserCenter extends wepy.page {
     this.userInfo = getStorage('userInfo') || {};
     if (!this.userInfo.nickName || this.userInfo.nickName === '') {
       this.showLogin = true;
+    } else {
+      this.showLogin = false;
     }
     this.$apply();
   }

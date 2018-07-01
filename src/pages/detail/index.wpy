@@ -127,7 +127,6 @@ export default class Detail extends wepy.page {
         getWxCode()
           .then(res => {
             this.getDetailQrcode();
-            console.log(res);
           })
           .catch(err => {
             this.$invoke('toast', 'show', err || '获取分享参数失败');
@@ -143,6 +142,7 @@ export default class Detail extends wepy.page {
   };
   // 获取当前文章的二维码图片
   getDetailQrcode() {
+    // let that = this;
     // 获取文章二维码
     post(`${Host}login/getWxcode`, {
       page: 'pages/detail/index',
@@ -150,12 +150,10 @@ export default class Detail extends wepy.page {
       width: 105
     })
       .then(qrcode => {
-        this.$broadcast('getQrcode', this.desc, qrcode, this.bannerCanvasHeight);
-        /* this.saveNetPic('qrcode', qrcode).then(res => {
-          console.log(res);
-        }).catch(err => {
-          this.$invoke('toast', 'show', err || '获取当前页面二维码图片失败');
-        }); */
+        this.saveNetPic('qrcode', qrcode).then(res => {
+          // console.log(res);
+          this.$broadcast('getQrcode', this.desc, this.bannerCanvasHeight);
+        });
       })
       .catch(err => {
         this.$invoke('toast', 'show', err || '获取分享参数失败');
@@ -180,13 +178,9 @@ export default class Detail extends wepy.page {
         WxParse.wxParse('htmlParserName', 'html', content, this, 0);
         this.$apply();
         // save pic
-        this.saveNetPic('banner', img)
-          .then(res => {
-            console.log(res);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        this.saveNetPic('banner', img).catch(err => {
+          console.log(err);
+        });
         this.$invoke('loading', 'handleAction', false);
       })
       .catch(err => {

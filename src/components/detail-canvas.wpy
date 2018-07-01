@@ -120,11 +120,12 @@ export default class DetailCanvas extends wepy.component {
     }
   };
   events = {
-    getQrcode: (text, qrcode, headHeight) => {
+    getQrcode: (text, headHeight) => {
       this.show = true;
       this.$apply();
       let headPic = getStorage('banner');
-      // console.log(headPic, headHeight);
+      let qrcode = getStorage('qrcode');
+      // console.log(headPic, qrcode);
       this.drawImage(text, qrcode, headPic, headHeight);
     }
   };

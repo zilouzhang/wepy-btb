@@ -28,10 +28,8 @@ export const getWxCode = () => {
             encryptedData: userInfo.encryptedData,
             iv: userInfo.iv
           }).then(data => {
-            console.log(data);
             resolve(data);
           }).catch(err => {
-            console.log(err);
             reject(err);
           });
         }).catch(err => {
