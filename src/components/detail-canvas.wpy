@@ -17,6 +17,24 @@
     width: 650rpx;
     background: #fff;
     overflow: auto;
+    image {
+      position: absolute;
+      z-index: 20;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 650rpx;
+    }
+  }
+  .hide {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
   }
   canvas {
     display: block;
@@ -53,7 +71,7 @@
 <template>
   <view class="canvas-modal" data-active="{{show}}">
     <view class="canvas-modal__box" style="height: {{canvasHeight}}px;">
-      <canvas style="height: {{canvasHeight}}px" canvas-id="ds" disable-scroll="{{true}}" bindtouchstart="touchStart" bindtouchmove="touchMove" />
+      <canvas style="height: {{canvasHeight}}px; " canvas-id="ds" disable-scroll="{{true}}" bindtouchstart="touchStart" bindtouchmove="touchMove" />
     </view>
     <view class="canvas-modal__btns">
       <view class="close-btn" @tap="close">取消</view>
@@ -136,13 +154,7 @@ export default class DetailCanvas extends wepy.component {
     ctx.fillRect(0, 0, this.headerWidth, this.canvasHeight);
     ctx.draw();
     ctx.save();
-    ctx.drawImage(
-      headPic,
-      0,
-      0,
-      this.headerWidth,
-      headHeight
-    );
+    ctx.drawImage(headPic, 0, 0, this.headerWidth, headHeight);
     ctx.save();
     // draw text
     this.drawText(ctx, text, headHeight);
@@ -172,8 +184,7 @@ export default class DetailCanvas extends wepy.component {
     const textOffsetLeft = Math.floor(28 * ScreenWidth / 750);
     const limitWidth =
       Math.floor(650 * ScreenWidth / 750) - (textOffsetLeft * 2 + 10);
-    const textStartOffsetTop =
-      headHeight + Math.floor(20 * ScreenWidth / 750);
+    const textStartOffsetTop = headHeight + Math.floor(20 * ScreenWidth / 750);
     ctx.font = '14px sans-serif';
     ctx.setFillStyle('#000000');
     textArrays.forEach(item => {
