@@ -70,17 +70,22 @@ page,
 <script>
 import wepy from 'wepy';
 import { Host } from 'config';
-import { get, post, getWxCode, setStorage } from 'utils';
+import { isLogin, get, post, getWxCode, setStorage, ScreenWidth } from 'utils';
 import WxParse from 'wxParse/wxParse';
 // components
 import DetailCanvas from 'components/detail-canvas';
 import Loading from 'components/loading';
 import Toast from 'components/toast';
+// mixin
+import SaveNetPic from 'mixins/saveNetPic';
+
 export default class Detail extends wepy.page {
   data = {
     id: '0', // 文章id
     banner: '',
     bannerHeight: '0rpx', // banner高度
+    bannerCanvasHeight: 0,
+    bannerCanvasWidth: Math.floor(650 * ScreenWidth / 750),
     title: '',
     timer: '',
     desc: '', // 文章概要
@@ -98,10 +103,16 @@ export default class Detail extends wepy.page {
       let { detail } = e;
       detail = detail || {};
       let { height, width } = detail;
+      let ratio = this.bannerCanvasWidth / width;
+      this.bannerCanvasHeight = height * ratio;
       this.bannerHeight = `${height / width * 750}rpx`;
       this.$apply();
     },
     getUserInfo(e) {
+      if (isLogin()) {
+        this.getDetailQrcode();
+        return false;
+      }
       let { detail } = e;
       detail = detail || {};
       let { signature, userInfo, encryptedData, iv } = detail;
@@ -112,12 +123,11 @@ export default class Detail extends wepy.page {
       userInfo.iv = iv;
       let res = setStorage('userInfo', userInfo);
       if (res) {
-        this.show = false;
-        this.$apply();
         // 登录
         getWxCode()
           .then(res => {
             this.getDetailQrcode();
+            console.log(res);
           })
           .catch(err => {
             this.$invoke('toast', 'show', err || '获取分享参数失败');
@@ -125,6 +135,7 @@ export default class Detail extends wepy.page {
       }
     }
   };
+  mixins = [SaveNetPic];
   events = {
     drawResult: err => {
       this.$invoke('toast', 'show', err);
@@ -138,9 +149,13 @@ export default class Detail extends wepy.page {
       scene: encodeURIComponent(this.id),
       width: 105
     })
-      .then(res => {
-        console.log(res);
-        this.$broadcast('getQrcode', this.desc, res);
+      .then(qrcode => {
+        this.$broadcast('getQrcode', this.desc, qrcode, this.bannerCanvasHeight);
+        /* this.saveNetPic('qrcode', qrcode).then(res => {
+          console.log(res);
+        }).catch(err => {
+          this.$invoke('toast', 'show', err || '获取当前页面二维码图片失败');
+        }); */
       })
       .catch(err => {
         this.$invoke('toast', 'show', err || '获取分享参数失败');
@@ -164,6 +179,14 @@ export default class Detail extends wepy.page {
         });
         WxParse.wxParse('htmlParserName', 'html', content, this, 0);
         this.$apply();
+        // save pic
+        this.saveNetPic('banner', img)
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => {
+            console.log(err);
+          });
         this.$invoke('loading', 'handleAction', false);
       })
       .catch(err => {
