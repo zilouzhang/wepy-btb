@@ -91,9 +91,9 @@ export default class UserCenter extends wepy.page {
   };
   state = {
     share: {
-      share_title: '111',
-      share_des: '222',
-      share_image: '333'
+      share_title: '',
+      share_des: '',
+      share_image: ''
     }
   };
   methods = {
@@ -107,7 +107,7 @@ export default class UserCenter extends wepy.page {
       if (res.from === 'button') {
         return {
           title: '花生财经',
-          desc: '花生财经是一家致力深耕财经垂直传播领域的媒体',
+          desc: '关注我就有好事花生',
           path: '/pages/index',
           imageUrl: '/images/detail/logo.png',
           success: function() {}

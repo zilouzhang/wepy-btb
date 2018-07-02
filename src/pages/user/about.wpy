@@ -13,9 +13,7 @@ page {
 </style>
 <template>
   <view class="container">
-    花生财经是一家致力深耕财经垂直传播领域的媒体，我们不仅是真实内容的搬运工，更是优质内容的生产者。<br />
-    花生财经将通过以视频为主，文字、图片等多样性的内容生产方式让更多的人了解财经，致力财经，共同推动财经行业发展。
-  </view>
+关注我就有好事花生  </view>
 </template>
 <script>
 import wepy from 'wepy';
