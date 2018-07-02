@@ -17,6 +17,24 @@
     width: 650rpx;
     background: #fff;
     overflow: auto;
+    image {
+      position: absolute;
+      z-index: 20;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 650rpx;
+    }
+  }
+  .hide {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
   }
   canvas {
     display: block;
@@ -53,7 +71,7 @@
 <template>
   <view class="canvas-modal" data-active="{{show}}">
     <view class="canvas-modal__box" style="height: {{canvasHeight}}px;">
-      <canvas style="height: {{canvasHeight}}px" canvas-id="ds" disable-scroll="{{true}}" />
+      <canvas style="height: {{canvasHeight}}px; " canvas-id="ds" disable-scroll="{{true}}" bindtouchstart="touchStart" bindtouchmove="touchMove" />
     </view>
     <view class="canvas-modal__btns">
       <view class="close-btn" @tap="close">取消</view>
@@ -63,11 +81,10 @@
 </template>
 <script>
 import wepy from 'wepy';
-import { ScreenWidth } from 'utils';
+import { ScreenWidth, getStorage } from 'utils';
 export default class DetailCanvas extends wepy.component {
   data = {
     show: false,
-    headerHeight: Math.floor(393 * ScreenWidth / 750),
     headerWidth: Math.floor(650 * ScreenWidth / 750),
     footerHeight: Math.floor(418 * ScreenWidth / 750),
     footerWidth: Math.floor(650 * ScreenWidth / 750),
@@ -107,34 +124,40 @@ export default class DetailCanvas extends wepy.component {
       });
     },
     close() {
+      // 关闭分享弹窗
       this.show = false;
       this.$apply();
+    },
+    touchStart() {
+      // 阻止 canvas 被拖动
+      return false;
+    },
+    touchMove() {
+      // 阻止 canvas 被拖动
+      return false;
     }
   };
   events = {
-    getQrcode: (text, qrcode) => {
+    getQrcode: (text, headHeight) => {
       this.show = true;
       this.$apply();
-      this.drawImage(text, qrcode);
+      let headPic = getStorage('banner');
+      let qrcode = getStorage('qrcode');
+      // console.log(headPic, qrcode);
+      this.drawImage(text, qrcode, headPic, headHeight);
     }
   };
   // 画图
-  drawImage(text, qrcode) {
+  drawImage(text, qrcode, headPic, headHeight) {
     const ctx = wepy.createCanvasContext('ds', this);
     ctx.setFillStyle('white');
     ctx.fillRect(0, 0, this.headerWidth, this.canvasHeight);
     ctx.draw();
     ctx.save();
-    ctx.drawImage(
-      '/images/detail/head.png',
-      0,
-      0,
-      this.headerWidth,
-      this.headerHeight
-    );
+    ctx.drawImage(headPic, 0, 0, this.headerWidth, headHeight);
     ctx.save();
     // draw text
-    this.drawText(ctx, text);
+    this.drawText(ctx, text, headHeight);
     ctx.drawImage(
       '/images/detail/footer.png',
       0,
@@ -154,15 +177,14 @@ export default class DetailCanvas extends wepy.component {
     ctx.draw(true);
   }
   // 画文本
-  drawText(ctx, text) {
+  drawText(ctx, text, headHeight) {
     const textArrays = text.split('');
     let temp = '';
     let row = [];
     const textOffsetLeft = Math.floor(28 * ScreenWidth / 750);
     const limitWidth =
       Math.floor(650 * ScreenWidth / 750) - (textOffsetLeft * 2 + 10);
-    const textStartOffsetTop =
-      this.headerHeight + Math.floor(20 * ScreenWidth / 750);
+    const textStartOffsetTop = headHeight + Math.floor(20 * ScreenWidth / 750);
     ctx.font = '14px sans-serif';
     ctx.setFillStyle('#000000');
     textArrays.forEach(item => {

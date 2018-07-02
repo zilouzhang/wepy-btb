@@ -27,8 +27,8 @@ export const getWxCode = () => {
             sessionKey: res.session_key,
             encryptedData: userInfo.encryptedData,
             iv: userInfo.iv
-          }).then(res => {
-            resolve(res);
+          }).then(data => {
+            resolve(data);
           }).catch(err => {
             reject(err);
           });

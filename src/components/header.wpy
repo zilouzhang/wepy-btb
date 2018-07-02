@@ -36,11 +36,11 @@
     <!-- <image class="header-top" src="/images/header.png"  /> -->
     <view class="header-swiper">
       <swiper indicator-dots="{{banner.length > 0 ? true : false}}" style="height: {{banner[0].height}}" autoplay="{{banner.length > 0 ? true : false}}">
-        <repeat for="{{banner}}" item="list" key="index">
+        <block wx:for="{{banner}}" wx:for-item="list" wx:key="index">
           <swiper-item>
             <image model="aspectFit" data-id="{{list.id}}" style="height: {{list.height}}" lazy-load="true" src="{{list.img}}" @load="resizePic" />
           </swiper-item>
-        </repeat>
+        </block>
       </swiper>
     </view>
     <slot name="title">标题图片</slot>
