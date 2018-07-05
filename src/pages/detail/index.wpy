@@ -62,7 +62,6 @@ page,
         <image src="/images/detail/send.png" />
       </button>
     </view>
-    <detailCanvas />
     <loading />
     <toast />
   </view>
@@ -73,7 +72,6 @@ import { Host } from 'config';
 import { isLogin, get, post, getWxCode, setStorage, ScreenWidth } from 'utils';
 import WxParse from 'wxParse/wxParse';
 // components
-import DetailCanvas from 'components/detail-canvas';
 import Loading from 'components/loading';
 import Toast from 'components/toast';
 // mixin
@@ -92,7 +90,6 @@ export default class Detail extends wepy.page {
     qrcode: ''
   };
   components = {
-    detailCanvas: DetailCanvas,
     toast: Toast,
     loading: Loading
   };
@@ -142,7 +139,7 @@ export default class Detail extends wepy.page {
   };
   // 获取当前文章的二维码图片
   getDetailQrcode() {
-    // let that = this;
+    this.$invoke('loading', 'showAction', true);
     // 获取文章二维码
     post(`${Host}login/getWxcode`, {
       page: 'pages/detail/index',
@@ -150,12 +147,11 @@ export default class Detail extends wepy.page {
       width: 105
     })
       .then(qrcode => {
+        this.$invoke('loading', 'showAction', false);
         this.saveNetPic('qrcode', qrcode).then(res => {
-          // console.log(res);
           wepy.navigateTo({
             url: '/pages/canvas/index'
           });
-          // this.$broadcast('getQrcode', this.desc, this.bannerCanvasHeight);
         });
       })
       .catch(err => {
@@ -164,7 +160,7 @@ export default class Detail extends wepy.page {
   }
   // 获取文章数据
   getInit(id) {
-    this.$invoke('loading', 'handleAction', true);
+    this.$invoke('loading', 'showAction', true);
     get(`${Host}detail/info`, {
       aid: id
     })
@@ -181,14 +177,16 @@ export default class Detail extends wepy.page {
         WxParse.wxParse('htmlParserName', 'html', content, this, 0);
         this.$apply();
         // save pic
-        this.saveNetPic('banner', img).catch(err => {
+        this.saveNetPic('banner', img).then(() => {
+          setStorage('desc', desc);
+        }).catch(err => {
           console.log(err);
         });
-        this.$invoke('loading', 'handleAction', false);
+        this.$invoke('loading', 'showAction', false);
       })
       .catch(err => {
         this.$invoke('toast', 'show', err);
-        this.$invoke('loading', 'handleAction', false);
+        this.$invoke('loading', 'showAction', false);
       });
   }
   onLoad(e) {

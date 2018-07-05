@@ -51,7 +51,7 @@ export default class Loading extends wepy.component {
     show: false
   };
   methods = {
-    handleAction(show) {
+    showAction(show) {
       this.show = show;
       this.$apply();
     }

@@ -1,36 +1,14 @@
 <style lang="less">
-.canvas-modal {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+page {
   background: rgba(0, 0, 0, 0.45);
-  box-sizing: border-box;
+}
+.canvas-modal {
   &__box {
     position: relative;
     margin: 70rpx auto 0;
     width: 650rpx;
     background: #fff;
     overflow: auto;
-    image {
-      position: absolute;
-      z-index: 20;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      width: 650rpx;
-    }
-  }
-  .hide {
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 0;
   }
   canvas {
     display: block;
@@ -70,7 +48,7 @@
       <canvas style="height: {{canvasHeight}}px; " canvas-id="ds" disable-scroll="{{true}}" bindtouchstart="touchStart" bindtouchmove="touchMove" />
     </view>
     <view class="canvas-modal__btns">
-      <view class="close-btn" @tap="close">取消</view>
+      <view class="close-btn" @tap="cancel">取消</view>
       <view class="save-btn" @tap="savePic">保存图片</view>
     </view>
   </view>
@@ -84,7 +62,6 @@ export default class DetailCanvas extends wepy.page {
     navigationBarTitleText: ''
   };
   data = {
-    show: false,
     headerWidth: Math.floor(650 * ScreenWidth / 750),
     footerHeight: Math.floor(418 * ScreenWidth / 750),
     footerWidth: Math.floor(650 * ScreenWidth / 750),
@@ -102,31 +79,38 @@ export default class DetailCanvas extends wepy.page {
   methods = {
     savePic() {
       // 保存图片
-      let that = this;
       wx.canvasToTempFilePath({
         canvasId: 'ds',
         success: res => {
           wx.saveImageToPhotosAlbum({
             filePath: res.tempFilePath,
             success: () => {
-              that.show = false;
-              that.$apply();
-              that.$emit('drawResult', '图片保存成功');
+              wepy.showToast({
+                title: '图片保存成功',
+                icon: 'success'
+              });
             },
             fail: () => {
-              that.$emit('drawResult', '图片保存失败');
+              wepy.showToast({
+                title: '图片保存失败',
+                icon: 'none'
+              });
             }
           });
         },
         fail: () => {
-          that.$emit('drawResult', '图片加载失败');
+          wepy.showToast({
+            title: '图片加载失败',
+            icon: 'none'
+          });
         }
       });
     },
-    close() {
-      // 关闭分享弹窗
-      this.show = false;
-      this.$apply();
+    cancel() {
+      // 返回上一页
+      wepy.navigateBack({
+        delta: 1
+      });
     },
     touchStart() {
       // 阻止 canvas 被拖动
@@ -137,24 +121,16 @@ export default class DetailCanvas extends wepy.page {
       return false;
     }
   };
-  events = {
-    getQrcode: (text, headHeight) => {
-      this.show = true;
-      this.$apply();
-      let headPic = getStorage('banner');
-      let qrcode = getStorage('qrcode');
-      // console.log(headPic, qrcode);
-      this.drawImage(text, qrcode, headPic, headHeight);
-    }
-  };
   // 获取画图素材
   getSuCai() {
-    let text = getStorage('text');
+    let desc = getStorage('desc');
     let headPic = getStorage('banner');
     let qrcode = getStorage('qrcode');
+    let bannerCanvasHeight = getStorage('bannerCanvasHeight');
+    this.drawImage(desc, qrcode, headPic, bannerCanvasHeight);
   }
   // 画图
-  drawImage(text, qrcode, headPic, headHeight) {
+  drawImage(desc, qrcode, headPic, headHeight) {
     const ctx = wepy.createCanvasContext('ds', this);
     ctx.setFillStyle('white');
     ctx.fillRect(0, 0, this.headerWidth, this.canvasHeight);
@@ -163,7 +139,7 @@ export default class DetailCanvas extends wepy.page {
     ctx.drawImage(headPic, 0, 0, this.headerWidth, headHeight);
     ctx.save();
     // draw text
-    this.drawText(ctx, text, headHeight);
+    this.drawText(ctx, desc, headHeight);
     ctx.drawImage(
       '/images/detail/footer.png',
       0,
@@ -183,8 +159,8 @@ export default class DetailCanvas extends wepy.page {
     ctx.draw(true);
   }
   // 画文本
-  drawText(ctx, text, headHeight) {
-    const textArrays = text.split('');
+  drawText(ctx, desc, headHeight) {
+    const textArrays = desc.split('');
     let temp = '';
     let row = [];
     const textOffsetLeft = Math.floor(28 * ScreenWidth / 750);
@@ -206,6 +182,9 @@ export default class DetailCanvas extends wepy.page {
     row.forEach((item, index) => {
       ctx.fillText(item, textOffsetLeft, textStartOffsetTop + (index + 1) * 20);
     });
+  }
+  onShow() {
+    this.getSuCai();
   }
 }
 </script>

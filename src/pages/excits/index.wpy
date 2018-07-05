@@ -69,9 +69,6 @@ export default class Excits extends wepy.page {
     }
   }
   onHide() {
-    this.banner = [];
-    this.lists = [];
-    this.hasMore = true;
     this.page = 1;
     this.$apply();
   }

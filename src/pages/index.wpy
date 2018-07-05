@@ -38,9 +38,11 @@ export default class Index extends wepy.page {
         if (this.page === 1) {
           this.banner = banner;
         }
-        this.hasMore = !!res.has_more_page;
+        this.hasMore = res.has_more_page === 1 ? true : false;
         this.lists = listsCache;
-        this.page += 1;
+        if (res.has_more_page === 1) {
+          this.page += 1;
+        }
         this.$apply();
       })
       .catch(err => {
@@ -74,9 +76,6 @@ export default class Index extends wepy.page {
     }
   }
   onHide() {
-    this.banner = [];
-    this.lists = [];
-    this.hasMore = true;
     this.page = 1;
     this.$apply();
   }
