@@ -40,7 +40,9 @@ export default class Excits extends wepy.page {
         }
         this.hasMore = !!res.has_more_page;
         this.lists = listsCache;
-        this.page += 1;
+        if (!!res.has_more_page) {
+          this.page += 1;
+        }
         this.$apply();
       })
       .catch(err => {
