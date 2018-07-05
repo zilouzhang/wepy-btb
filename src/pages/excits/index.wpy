@@ -38,11 +38,13 @@ export default class Excits extends wepy.page {
         if (this.page === 1) {
           this.banner = banner;
         }
-        this.hasMore = !!res.has_more_page;
-        this.lists = listsCache;
-        if (!!res.has_more_page) {
+        if (res.has_more_page === 1) {
+          this.hasMore = true;
           this.page += 1;
+        } else {
+          this.hasMore = false;
         }
+        this.lists = listsCache;
         this.$apply();
       })
       .catch(err => {

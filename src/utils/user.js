@@ -26,7 +26,7 @@ export const getWxCode = () => {
           post(`${Host}login/index`, {
             sessionKey: res.session_key,
             encryptedData: userInfo.encryptedData,
-            iv: userInfo.iv
+            iv: encodeURIComponent(userInfo.iv)
           }).then(data => {
             resolve(data);
           }).catch(err => {

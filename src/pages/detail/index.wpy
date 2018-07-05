@@ -125,21 +125,21 @@ export default class Detail extends wepy.page {
           .then(res => {
             this.getDetailQrcode();
           })
-          .catch(err => {
-            this.$invoke('toast', 'show', err || '获取分享参数失败');
+          .catch(() => {
+            wepy.showToast({
+              title: '获取分享参数失败',
+              icon: 'none'
+            });
           });
       }
     }
   };
   mixins = [SaveNetPic];
-  events = {
-    drawResult: err => {
-      this.$invoke('toast', 'show', err);
-    }
-  };
   // 获取当前文章的二维码图片
   getDetailQrcode() {
-    this.$invoke('loading', 'showAction', true);
+    wepy.showLoading({
+      title: '正在加载...'
+    });
     // 获取文章二维码
     post(`${Host}login/getWxcode`, {
       page: 'pages/detail/index',
@@ -147,7 +147,7 @@ export default class Detail extends wepy.page {
       width: 105
     })
       .then(qrcode => {
-        this.$invoke('loading', 'showAction', false);
+        wepy.hideLoading();
         this.saveNetPic('qrcode', qrcode).then(res => {
           wepy.navigateTo({
             url: '/pages/canvas/index'
@@ -155,7 +155,10 @@ export default class Detail extends wepy.page {
         });
       })
       .catch(err => {
-        this.$invoke('toast', 'show', err || '获取分享参数失败');
+        wepy.showToast({
+          title: err || '获取分享参数失败',
+          icon: 'none'
+        });
       });
   }
   // 获取文章数据
@@ -177,11 +180,13 @@ export default class Detail extends wepy.page {
         WxParse.wxParse('htmlParserName', 'html', content, this, 0);
         this.$apply();
         // save pic
-        this.saveNetPic('banner', img).then(() => {
-          setStorage('desc', desc);
-        }).catch(err => {
-          console.log(err);
-        });
+        this.saveNetPic('banner', img)
+          .then(() => {
+            setStorage('desc', desc);
+          })
+          .catch(err => {
+            console.log(err);
+          });
         this.$invoke('loading', 'showAction', false);
       })
       .catch(err => {
