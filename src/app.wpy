@@ -28,6 +28,7 @@ export default class extends wepy.app {
       'pages/index',
       'pages/excits/index',
       'pages/detail/index',
+      'pages/canvas/index',
       'pages/user/index',
       'pages/user/about'
     ],

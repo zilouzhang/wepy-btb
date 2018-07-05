@@ -1,0 +1,211 @@
+<style lang="less">
+.canvas-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.45);
+  box-sizing: border-box;
+  &__box {
+    position: relative;
+    margin: 70rpx auto 0;
+    width: 650rpx;
+    background: #fff;
+    overflow: auto;
+    image {
+      position: absolute;
+      z-index: 20;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 650rpx;
+    }
+  }
+  .hide {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+  }
+  &__btns {
+    margin-top: 40rpx;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  .close-btn,
+  .save-btn {
+    width: 300rpx;
+    height: 96rpx;
+    line-height: 96rpx;
+    font-size: 32rpx;
+    border-radius: 10rpx;
+    overflow: hidden;
+    text-align: center;
+  }
+  .save-btn {
+    color: #fff;
+    background: #f9cf00;
+  }
+  .close-btn {
+    margin-right: 50rpx;
+    color: #333;
+    background: #fff;
+  }
+}
+</style>
+<template>
+  <view class="canvas-modal">
+    <view class="canvas-modal__box" style="height: {{canvasHeight}}px;">
+      <canvas style="height: {{canvasHeight}}px; " canvas-id="ds" disable-scroll="{{true}}" bindtouchstart="touchStart" bindtouchmove="touchMove" />
+    </view>
+    <view class="canvas-modal__btns">
+      <view class="close-btn" @tap="close">取消</view>
+      <view class="save-btn" @tap="savePic">保存图片</view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import { ScreenWidth, getStorage } from 'utils';
+export default class DetailCanvas extends wepy.page {
+  config = {
+    navigationBarTitleText: ''
+  };
+  data = {
+    show: false,
+    headerWidth: Math.floor(650 * ScreenWidth / 750),
+    footerHeight: Math.floor(418 * ScreenWidth / 750),
+    footerWidth: Math.floor(650 * ScreenWidth / 750),
+    textHeight: Math.floor(300 * ScreenWidth / 750),
+    qrcodeWidth: Math.floor(210 * ScreenWidth / 750),
+    qrcodeOffsetLeft:
+      Math.floor(650 * ScreenWidth / 750) -
+      (Math.floor(210 * ScreenWidth / 750) +
+        Math.floor(28 * ScreenWidth / 750)),
+    canvasHeight:
+      Math.floor(393 * ScreenWidth / 750) +
+      Math.floor(300 * ScreenWidth / 750) +
+      Math.floor(250 * ScreenWidth / 750)
+  };
+  methods = {
+    savePic() {
+      // 保存图片
+      let that = this;
+      wx.canvasToTempFilePath({
+        canvasId: 'ds',
+        success: res => {
+          wx.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success: () => {
+              that.show = false;
+              that.$apply();
+              that.$emit('drawResult', '图片保存成功');
+            },
+            fail: () => {
+              that.$emit('drawResult', '图片保存失败');
+            }
+          });
+        },
+        fail: () => {
+          that.$emit('drawResult', '图片加载失败');
+        }
+      });
+    },
+    close() {
+      // 关闭分享弹窗
+      this.show = false;
+      this.$apply();
+    },
+    touchStart() {
+      // 阻止 canvas 被拖动
+      return false;
+    },
+    touchMove() {
+      // 阻止 canvas 被拖动
+      return false;
+    }
+  };
+  events = {
+    getQrcode: (text, headHeight) => {
+      this.show = true;
+      this.$apply();
+      let headPic = getStorage('banner');
+      let qrcode = getStorage('qrcode');
+      // console.log(headPic, qrcode);
+      this.drawImage(text, qrcode, headPic, headHeight);
+    }
+  };
+  // 获取画图素材
+  getSuCai() {
+    let text = getStorage('text');
+    let headPic = getStorage('banner');
+    let qrcode = getStorage('qrcode');
+  }
+  // 画图
+  drawImage(text, qrcode, headPic, headHeight) {
+    const ctx = wepy.createCanvasContext('ds', this);
+    ctx.setFillStyle('white');
+    ctx.fillRect(0, 0, this.headerWidth, this.canvasHeight);
+    ctx.draw();
+    ctx.save();
+    ctx.drawImage(headPic, 0, 0, this.headerWidth, headHeight);
+    ctx.save();
+    // draw text
+    this.drawText(ctx, text, headHeight);
+    ctx.drawImage(
+      '/images/detail/footer.png',
+      0,
+      this.canvasHeight - this.footerHeight,
+      this.footerWidth,
+      this.footerHeight
+    );
+    ctx.save();
+    ctx.drawImage(
+      qrcode,
+      this.qrcodeOffsetLeft,
+      this.canvasHeight - (this.qrcodeWidth + 5),
+      this.qrcodeWidth,
+      this.qrcodeWidth
+    );
+    ctx.save();
+    ctx.draw(true);
+  }
+  // 画文本
+  drawText(ctx, text, headHeight) {
+    const textArrays = text.split('');
+    let temp = '';
+    let row = [];
+    const textOffsetLeft = Math.floor(28 * ScreenWidth / 750);
+    const limitWidth =
+      Math.floor(650 * ScreenWidth / 750) - (textOffsetLeft * 2 + 10);
+    const textStartOffsetTop = headHeight + Math.floor(20 * ScreenWidth / 750);
+    ctx.font = '14px sans-serif';
+    ctx.setFillStyle('#000000');
+    textArrays.forEach(item => {
+      if (ctx.measureText(temp).width > limitWidth) {
+        row.push(temp);
+        temp = '';
+      }
+      temp += item;
+    });
+    if (temp) {
+      row.push(temp);
+    }
+    row.forEach((item, index) => {
+      ctx.fillText(item, textOffsetLeft, textStartOffsetTop + (index + 1) * 20);
+    });
+  }
+}
+</script>

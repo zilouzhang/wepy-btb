@@ -63,19 +63,22 @@ export default class Index extends wepy.page {
     hasMore: true,
     lists: []
   };
-  onShow() {
-    this.lists = [];
-    this.hasMore = true;
-    this.page = 1;
-    this.$apply();
-    if (this.hasMore) {
-      this.getList();
-    }
-  }
   mixins = [LoadMore];
 
   methods = {};
 
   events = {};
+  onLoad() {
+    if (this.hasMore) {
+      this.getList();
+    }
+  }
+  onHide() {
+    this.banner = [];
+    this.lists = [];
+    this.hasMore = true;
+    this.page = 1;
+    this.$apply();
+  }
 }
 </script>
