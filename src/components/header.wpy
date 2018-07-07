@@ -35,7 +35,7 @@
   <view class="header">
     <!-- <image class="header-top" src="/images/header.png"  /> -->
     <view class="header-swiper">
-      <swiper indicator-dots="{{banner.length > 0 ? true : false}}" style="height: {{banner[0].height}}" autoplay="{{banner.length > 0 ? true : false}}">
+      <swiper indicator-dots="{{showDots}}" style="height: {{banner[0].height}}" autoplay="{{autoPlay}}" circular="true">
         <block wx:for="{{banner}}" wx:for-item="list" wx:key="index">
           <swiper-item>
             <image model="aspectFit" data-id="{{list.id}}" style="height: {{list.height}}" lazy-load="true" src="{{list.img}}" @load="resizePic" />
@@ -50,7 +50,15 @@
 import wepy from 'wepy';
 export default class Header extends wepy.component {
   props = {
-    banner: Object
+    banner: Object,
+    showDots: {
+      type: Boolean,
+      default: false
+    },
+    autoPlay: {
+      type: Boolean,
+      default: false
+    }
   };
   methods = {
     resizePic(e) {

@@ -1,6 +1,6 @@
 <template>
   <view class="container">
-    <header :banner.sync="banner">
+    <header :banner.sync="banner" :autoPlay="autoPlay" :showDots="showDots">
       <view class="header-title" slot="title">
         <image src="/images/index/title.png" />
       </view>
@@ -63,6 +63,8 @@ export default class Index extends wepy.page {
     hasMoreTip: HasMoreTip
   };
   data = {
+    showDots: true,
+    autoPlay: true,
     banner: [],
     hasMore: true,
     lists: []
