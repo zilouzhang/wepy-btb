@@ -43,6 +43,7 @@ export default class Excits extends wepy.page {
           this.page += 1;
         } else {
           this.hasMore = false;
+          this.page = 1;
         }
         this.lists = listsCache;
         this.$apply();
@@ -63,6 +64,7 @@ export default class Excits extends wepy.page {
     hasMoreTip: HasMoreTip
   };
   data = {
+    page: 1,
     banner: [],
     lists: []
   };
@@ -71,10 +73,6 @@ export default class Excits extends wepy.page {
     if (this.hasMore) {
       this.getList();
     }
-  }
-  onHide() {
-    this.page = 1;
-    this.$apply();
   }
 }
 </script>

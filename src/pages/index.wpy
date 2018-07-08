@@ -23,7 +23,6 @@ import Toast from 'components/toast';
 // mixins
 import LoadMore from 'mixins/loadMore';
 export default class Index extends wepy.page {
-  page = 1;
   // 获取数据
   getList() {
     post(`${Host}new/lists`, {
@@ -43,6 +42,7 @@ export default class Index extends wepy.page {
           this.page += 1;
         } else {
           this.hasMore = false;
+          this.page = 1;
         }
         this.lists = listsCache;
         this.$apply();
@@ -65,6 +65,7 @@ export default class Index extends wepy.page {
   data = {
     showDots: true,
     autoPlay: true,
+    page: 1,
     banner: [],
     hasMore: true,
     lists: []
@@ -78,10 +79,6 @@ export default class Index extends wepy.page {
     if (this.hasMore) {
       this.getList();
     }
-  }
-  onHide() {
-    this.page = 1;
-    this.$apply();
   }
 }
 </script>
