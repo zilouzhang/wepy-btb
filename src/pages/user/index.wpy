@@ -107,10 +107,10 @@ export default class UserCenter extends wepy.page {
     onShareAppMessage(res) {
       if (res.from === 'button') {
         return {
-          title: '花生财经',
+          title: '花生精彩播报',
           desc: '关注我就有好事花生',
           path: '/pages/index',
-          imageUrl: '/images/detail/logo.png',
+          imageUrl: '/images/share.jpeg',
           success: function() {}
         };
       }
