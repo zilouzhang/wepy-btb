@@ -1,0 +1,46 @@
+
+  <view class="container">
+    
+  <view class="header">
+    <!-- <image class="header-top" src="/images/header.png"  /> -->
+    <view class="header-swiper">
+      <swiper indicator-dots="{{$header$showDots}}" style="height: {{$header$banner[0].height}}" autoplay="{{$header$autoPlay}}" circular="true">
+        <block  wx:for="{{$header$banner}}" wx:for-item="list" wx:key="index">
+          <swiper-item>
+            <image model="aspectFit" data-id="{{list.id}}" style="height: {{list.height}}" lazy-load="true" src="{{list.img}}" bindload="$header$resizePic"/>
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+    <view class="header-title">
+        <image src="/images/index/title.png"/>
+      </view>
+  </view>
+
+    
+  <view class="lists">
+    <block  wx:for="{{$homeLists$lists}}" wx:key="{{index}}">
+      <navigator url="/pages/detail/index?id={{item.id}}" class="single-block" hover-class="none">
+        <view class="single-block__info">
+          <view class="single-block__title">{{item.title}}</view>
+          <view class="single-block__sub">
+            <text>{{item.from}}</text>
+            <text>{{item.time}}</text>
+          </view>
+        </view>
+        <view class="single-block__pic">
+          <image src="{{item.img}}"/>
+        </view>
+      </navigator>
+    </block>
+  </view>
+
+    
+  <view class="wetoast" data-active="{{$toast$show}}">
+    <text class="wetoast__text">{{$toast$text}}</text>
+  </view>
+
+    
+  <view class="has-more" data-active="{{$hasMoreTip$show}}">正在加载中...</view>
+
+  </view>

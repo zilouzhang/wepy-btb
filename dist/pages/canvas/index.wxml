@@ -1,0 +1,10 @@
+
+  <view class="canvas-modal">
+    <view class="canvas-modal__box" style="height: {{canvasHeight}}px;">
+      <canvas style="height: {{canvasHeight}}px; " canvas-id="ds" disable-scroll="{{true}}" bindtouchstart="touchStart" bindtouchmove="touchMove"/>
+    </view>
+    <view class="canvas-modal__btns">
+      <view class="close-btn" bindtap="cancel">取消</view>
+      <view class="save-btn" bindtap="savePic">保存图片</view>
+    </view>
+  </view>

@@ -1,0 +1,28 @@
+
+  <view class="container">
+    <block  wx:if="{{banner}}">
+      <image class="head-banner" bindload="resizeBanner" style="height: {{bannerHeight}}" src="{{banner}}"/>
+    </block>
+    <view class="title">{{title}}</view>
+    <view class="timer">{{timer}}</view>
+    <view class="article">
+      <import src="../../wxParse/wxParse.wxml"/>
+      <template is="wxParse" data="{{wxParseData: htmlParserName.nodes}}"/>
+    </view>
+    <view class="btns">
+      <button open-type="getUserInfo" bindgetuserinfo="getUserInfo" hover-class="none">
+        <image src="/images/detail/share.png"/>
+      </button>
+      <button open-type="share" hover-class="none">
+        <image src="/images/detail/send.png"/>
+      </button>
+    </view>
+    
+  <view data-active="{{$loading$show}}" class="loading"/>
+
+    
+  <view class="wetoast" data-active="{{$toast$show}}">
+    <text class="wetoast__text">{{$toast$text}}</text>
+  </view>
+
+  </view>

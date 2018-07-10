@@ -1,0 +1,31 @@
+.header {
+  width: 750rpx;
+  height: auto;
+  font-size: 0;
+}
+.header-top {
+  display: block;
+  width: 750rpx;
+  height: 125rpx;
+}
+.header-swiper {
+  font-size: 0;
+}
+.header-swiper swiper {
+  height: auto;
+}
+.header-swiper image {
+  display: block;
+  width: 750rpx;
+  height: 389rpx;
+}
+.header-title {
+  margin: 10rpx auto 25rpx;
+  font-size: 0;
+}
+.header-title image {
+  display: block;
+  margin: 0 auto;
+  width: 733rpx;
+  height: 78rpx;
+}

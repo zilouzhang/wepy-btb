@@ -1,0 +1,38 @@
+.loading {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 10rpx;
+  background: rgba(255, 255, 255, 0.8);
+}
+.loading[data-active='true'] {
+  display: block;
+}
+.loading::before {
+  content: '';
+  position: absolute;
+  top: 15rpx;
+  left: 15rpx;
+  width: 70rpx;
+  height: 70rpx;
+  border: 6rpx solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  box-sizing: border-box;
+  border-top-color: #f9cf00;
+  border-right-color: #f9cf00;
+  animation: circle_rotating 0.7s linear infinite forwards;
+}
+@keyframes circle_rotating {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(1turn);
+    transform: rotate(1turn);
+  }
+}

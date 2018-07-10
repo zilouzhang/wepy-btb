@@ -1,0 +1,57 @@
+.lists {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0 28rpx;
+}
+.tofu-block {
+  margin-bottom: 25rpx;
+  width: 334rpx;
+  padding-bottom: 15rpx;
+  background: #fff;
+  overflow: hidden;
+}
+.tofu-block__pic {
+  position: relative;
+  font-size: 0;
+}
+.tofu-block__pic .pic {
+  display: block;
+  width: 334rpx;
+  height: 188rpx;
+}
+.tofu-block__pic .cover {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 65rpx;
+  height: 65rpx;
+  transform: translate(-50%, -50%);
+}
+.tofu-block__title {
+  display: block;
+  margin: 15rpx 24rpx;
+  font-size: 28rpx;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.tofu-block__sub {
+  position: relative;
+  padding: 0 24rpx;
+  font-size: 0;
+}
+.tofu-block__sub-from {
+  font-size: 24rpx;
+  color: #666;
+}
+.tofu-block__sub .dot {
+  position: absolute;
+  right: 4rpx;
+  top: 50%;
+  width: 28rpx;
+  height: 28rpx;
+  transform: translate(0, -50%);
+}

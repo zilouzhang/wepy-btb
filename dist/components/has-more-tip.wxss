@@ -1,0 +1,11 @@
+.has-more {
+  display: none;
+  height: 60rpx;
+  line-height: 60rpx;
+  font-size: 28rpx;
+  color: #a88e78;
+  text-align: center;
+}
+.has-more[data-active='true'] {
+  display: block;
+}

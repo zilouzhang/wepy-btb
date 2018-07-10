@@ -1,0 +1,28 @@
+
+  <view class="container">
+    <view class="head-block">
+      <image class="head-block__img" src="{{userInfo.avatarUrl || ''}}"/>
+      <view class="head-block__info">
+        <text class="head-block__info--name">{{userInfo.nickName || '请先登录'}}</text>
+      </view>
+    </view>
+    <view class="menu-block">
+      <button open-type="share" class="menu-block__item" hover-class="none">
+        <text class="left">分享</text>
+        <image class="gray_arrow" src="/images/gray_arrow.png"/>
+      </button>
+      <view class="menu-block__item" data-url="user/about" bindtap="toUrl">
+        <text class="left">关于我们</text>
+        <image class="gray_arrow" src="/images/gray_arrow.png"/>
+      </view>
+    </view>
+    
+  <view class="login" data-active="{{$login$show}}">
+    <view class="login__bg"/>
+    <view class="login__box">
+      <text class="login__text">您需要先登录哦~~~</text>
+      <button open-type="getUserInfo" bindgetuserinfo="$login$getUserInfo">点击一键授权登录</button>
+    </view>
+  </view>
+
+  </view>

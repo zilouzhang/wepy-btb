@@ -1,0 +1,40 @@
+page {
+  background: rgba(0, 0, 0, 0.45);
+}
+.canvas-modal__box {
+  position: relative;
+  margin: 70rpx auto 0;
+  width: 650rpx;
+  background: #fff;
+  overflow: auto;
+}
+.canvas-modal canvas {
+  display: block;
+  width: 100%;
+}
+.canvas-modal__btns {
+  margin-top: 40rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.canvas-modal .close-btn,
+.canvas-modal .save-btn {
+  width: 300rpx;
+  height: 96rpx;
+  line-height: 96rpx;
+  font-size: 32rpx;
+  border-radius: 10rpx;
+  overflow: hidden;
+  text-align: center;
+}
+.canvas-modal .save-btn {
+  color: #fff;
+  background: #f9cf00;
+}
+.canvas-modal .close-btn {
+  margin-right: 50rpx;
+  color: #333;
+  background: #fff;
+}

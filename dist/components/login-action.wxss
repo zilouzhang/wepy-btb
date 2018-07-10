@@ -1,0 +1,58 @@
+.login {
+  height: 0;
+}
+.login__bg {
+  content: '';
+  position: fixed;
+  z-index: -2;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.25);
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.login__box {
+  position: fixed;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: 520rpx;
+  border-radius: 20rpx;
+  background: #fff;
+  overflow: hidden;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.login__text {
+  display: block;
+  height: 120rpx;
+  line-height: 120rpx;
+  font-size: 32rpx;
+  color: #000;
+}
+.login button {
+  border-top: 1px solid #ebebeb;
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 28rpx;
+  color: #a88e78;
+  text-align: center;
+}
+.login[data-active='true'] .login__bg {
+  z-index: 10;
+  visibility: visible;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+.login[data-active='true'] .login__box {
+  z-index: 12;
+  visibility: visible;
+  opacity: 1;
+  transition: all 0.3s ease;
+}

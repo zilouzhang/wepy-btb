@@ -1,0 +1,11 @@
+page {
+  background: #fff;
+  color: #333;
+}
+.container {
+  background: #fff;
+  box-sizing: border-box;
+  line-height: 1.6;
+  font-size: 32rpx;
+  padding: 40rpx 30rpx;
+}
